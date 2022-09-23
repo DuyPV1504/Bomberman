@@ -10,10 +10,7 @@ import javafx.stage.Stage;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Sprite;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -62,6 +59,7 @@ public class BombermanGame extends Application {
 
         createMap();
 
+        // bomberman init
         Entity bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
         entities.add(bomberman);
     }
@@ -75,11 +73,12 @@ public class BombermanGame extends Application {
 
         //Đọc dòng đầu tiên để lấy kích thước của mảng
         int level = myReader.nextInt();
-        int levelWidth = myReader.nextInt();
-        int levelHeight = myReader.nextInt();
+        int row = myReader.nextInt();
+        int column = myReader.nextInt();
 
-        for (int i = 0; i < HEIGHT; i++) {
-            for (int j = 0; j < WIDTH; j++) {
+        //Lấy map từ file
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < column; j++) {
                 Entity object;
                 String type = myReader.next();
 
@@ -93,6 +92,10 @@ public class BombermanGame extends Application {
 
                 } else if (type.equals("x")) {
 
+                    //Đặt cỏ ở dưới
+                    Entity layer = new Grass(j, i, Sprite.grass.getFxImage());
+                    stillObjects.add(layer);
+
                     object = new Portal(j, i, Sprite.portal.getFxImage());
 
                 } else {
@@ -104,6 +107,8 @@ public class BombermanGame extends Application {
                 stillObjects.add(object);
             }
         }
+
+        myReader.close();
     }
 
     public void update() {
