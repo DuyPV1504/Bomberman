@@ -2,6 +2,7 @@ package uet.oop.bomberman.entities;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.shape.Rectangle;
 import uet.oop.bomberman.graphics.Sprite;
 
 public abstract class Entity {
@@ -13,11 +14,46 @@ public abstract class Entity {
 
     protected Image img;
 
+    //Collision box
+    protected Rectangle collisionBox;
+
     //Khởi tạo đối tượng, chuyển từ tọa độ đơn vị sang tọa độ trong canvas
     public Entity( int xUnit, int yUnit, Image img) {
         this.x = xUnit * Sprite.SCALED_SIZE;
         this.y = yUnit * Sprite.SCALED_SIZE;
         this.img = img;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public Image getImg() {
+        return img;
+    }
+
+    public void setImg(Image img) {
+        this.img = img;
+    }
+
+    public Rectangle getCollisionBox() {
+        return collisionBox;
+    }
+
+    public void setCollisionBox(Rectangle collisionBox) {
+        this.collisionBox = collisionBox;
     }
 
     public void render(GraphicsContext gc) {

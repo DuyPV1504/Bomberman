@@ -14,6 +14,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class BombermanGame extends Application {
     
@@ -44,9 +45,19 @@ public class BombermanGame extends Application {
         // Tao scene
         Scene scene = new Scene(root);
 
-        // Them scene vao stage
-        stage.setScene(scene);
-        stage.show();
+        // bomberman init
+        Entity bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
+        entities.add(bomberman);
+
+        //Draw collision box
+        bomberman.getCollisionBox().setFill(javafx.scene.paint.Color.RED);
+        root.getChildren().add(bomberman.getCollisionBox());
+
+        // Mouse handler
+        root.setOnMouseMoved(event -> {
+            bomberman.setX((int) event.getX());
+            bomberman.setY((int) event.getY());
+        });
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
@@ -55,13 +66,15 @@ public class BombermanGame extends Application {
                 update();
             }
         };
+
+        // Them scene vao stage
+        stage.setScene(scene);
+        stage.show();
+
         timer.start();
 
         createMap();
 
-        // bomberman init
-        Entity bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
-        entities.add(bomberman);
     }
 
     public void createMap() throws IOException {
