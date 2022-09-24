@@ -24,6 +24,8 @@ public class Bomber extends Entity {
     public void update() {
         collisionUpdate();
     }
+
+    @Override
     public void update(List<Entity> entities ,List<Entity> stillObjects) {
 
     }

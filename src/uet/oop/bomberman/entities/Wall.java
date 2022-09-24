@@ -4,8 +4,9 @@ import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
 import uet.oop.bomberman.graphics.Sprite;
 
-public class
-Wall extends Entity {
+import java.util.List;
+
+public class Wall extends Entity {
 
     public Wall(int x, int y, Image img) {
         super(x, y, img);
@@ -14,6 +15,11 @@ Wall extends Entity {
 
     @Override
     public void update() {
+
+    }
+
+    @Override
+    public void update(List<Entity> entities, List<Entity> stillObjects) {
 
     }
 }

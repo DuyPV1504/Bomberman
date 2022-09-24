@@ -4,6 +4,8 @@ import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
 import uet.oop.bomberman.graphics.Sprite;
 
+import java.util.List;
+
 public class Portal extends Entity {
     private int COLLISION_BOX_WIDTH = 26;
     private int COLLISION_BOX_HEIGHT = 24;
@@ -16,6 +18,11 @@ public class Portal extends Entity {
 
     @Override
     public void update() {
+
+    }
+
+    @Override
+    public void update(List<Entity> entities, List<Entity> stillObjects) {
 
     }
 }

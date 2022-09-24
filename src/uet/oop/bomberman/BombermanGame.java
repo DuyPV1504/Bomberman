@@ -48,12 +48,6 @@ public class BombermanGame extends Application {
         Entity bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
         entities.add(bomberman);
 
-        // Mouse handler
-        root.setOnMouseMoved(event -> {
-            bomberman.setX((int) event.getX());
-            bomberman.setY((int) event.getY());
-        });
-
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
