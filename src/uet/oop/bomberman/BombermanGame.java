@@ -9,6 +9,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.utils.Collision;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -26,9 +27,7 @@ public class BombermanGame extends Application {
     private List<Entity> entities = new ArrayList<>();
     private List<Entity> stillObjects = new ArrayList<>();
 
-
-    public static void main(
-            String[] args) {
+    public static void main(String[] args) {
         Application.launch(BombermanGame.class);
     }
 
@@ -48,10 +47,6 @@ public class BombermanGame extends Application {
         // bomberman init
         Entity bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
         entities.add(bomberman);
-
-        //Draw collision box
-        bomberman.getCollisionBox().setFill(javafx.scene.paint.Color.RED);
-        root.getChildren().add(bomberman.getCollisionBox());
 
         // Mouse handler
         root.setOnMouseMoved(event -> {
@@ -125,7 +120,9 @@ public class BombermanGame extends Application {
     }
 
     public void update() {
-        entities.forEach(Entity::update);
+        entities.forEach(entity -> {
+            entity.update();
+        });
     }
 
     public void render() {

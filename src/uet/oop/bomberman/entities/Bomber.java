@@ -3,6 +3,8 @@ package uet.oop.bomberman.entities;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
 
+import java.util.List;
+
 public class Bomber extends Entity {
 
     private int COLLISION_BOX_WIDTH = 15;
@@ -18,13 +20,12 @@ public class Bomber extends Entity {
         this.collisionBox.setY(y + 2);
     }
 
-    public void move(int x, int y) {
-        this.x += x;
-        this.y += y;
-    }
-
     @Override
     public void update() {
         collisionUpdate();
     }
+    public void update(List<Entity> entities ,List<Entity> stillObjects) {
+
+    }
+
 }

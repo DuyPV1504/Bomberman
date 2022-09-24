@@ -1,6 +1,7 @@
 package uet.oop.bomberman.entities;
 
 import javafx.scene.image.Image;
+import javafx.scene.shape.Rectangle;
 
 public class Grass extends Entity {
 
