@@ -9,13 +9,12 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Sprite;
-import uet.oop.bomberman.utils.Collision;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class BombermanGame extends Application {
     
@@ -81,32 +80,66 @@ public class BombermanGame extends Application {
         //Lấy map từ file
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < column; j++) {
-                Entity object;
                 String type = myReader.next();
 
                 if (type.equals("#")) {
 
+                    //Tạo Wall
+                    Entity object;
                     object = new Wall(j, i, Sprite.wall.getFxImage());
-
+                    stillObjects.add(object);
                 } else if (type.equals("*")) {
 
+                    //Tạo Brick
+                    Entity object;
                     object = new Brick(j, i, Sprite.brick.getFxImage());
-
+                    stillObjects.add(object);
                 } else if (type.equals("x")) {
 
                     //Đặt cỏ ở dưới
                     Entity layer = new Grass(j, i, Sprite.grass.getFxImage());
                     stillObjects.add(layer);
 
+                    //Tạo Portal
+                    Entity object;
                     object = new Portal(j, i, Sprite.portal.getFxImage());
+                    stillObjects.add(object);
+                } else if (type.equals("1")) {
 
+                    //Đặt cỏ ở dưới
+                    Entity layer = new Grass(j, i, Sprite.grass.getFxImage());
+                    stillObjects.add(layer);
+
+                    //Tạo enemy
+                    Entity object;
+                    object = new Balloon(j, i, Sprite.balloom_left1.getFxImage());
+                    entities.add(object);
+                } else if (type.equals("2")) {
+
+                    //Đặt cỏ ở dưới
+                    Entity layer = new Grass(j, i, Sprite.grass.getFxImage());
+                    stillObjects.add(layer);
+
+                    //Tạo enemy
+                    Entity object;
+                    object = new Oneal(j, i, Sprite.oneal_left1.getFxImage());
+                    entities.add(object);
+                } else if (type.equals("p")) {
+                    //Đặt cỏ ở dưới
+                    Entity layer = new Grass(j, i, Sprite.grass.getFxImage());
+                    layer = new Grass(j, i, Sprite.grass.getFxImage());
+                    stillObjects.add(layer);
+
+                    //Đặt bomberman ở vị trí này
+                    entities.get(0).setX(j);
+                    entities.get(0).setY(i);
                 } else {
 
+                    //Tạo cỏ
+                    Entity object;
                     object = new Grass(j, i, Sprite.grass.getFxImage());
-
+                    stillObjects.add(object);
                 }
-
-                stillObjects.add(object);
             }
         }
 
@@ -115,7 +148,10 @@ public class BombermanGame extends Application {
 
     public void update() {
         entities.forEach(entity -> {
-            entity.update();
+            if (entities.indexOf(entity) == 2) {
+                entity.update();
+            }
+            
         });
     }
 

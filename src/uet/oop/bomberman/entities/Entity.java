@@ -14,6 +14,12 @@ public abstract class Entity {
     //Tọa độ Y tính từ góc trái trên trong Canvas
     protected int y;
 
+    //Tọa độ X thực tế trong mảng
+    protected int xUnit;
+
+    //Tọa độ Y thực tế trong mảng
+    protected int yUnit;
+
     protected Image img;
 
     //Collision box
@@ -21,9 +27,27 @@ public abstract class Entity {
 
     //Khởi tạo đối tượng, chuyển từ tọa độ đơn vị sang tọa độ trong canvas
     public Entity( int xUnit, int yUnit, Image img) {
+        this.xUnit = xUnit;
+        this.yUnit = yUnit;
         this.x = xUnit * Sprite.SCALED_SIZE;
         this.y = yUnit * Sprite.SCALED_SIZE;
         this.img = img;
+    }
+
+    public int getxUnit() {
+        return xUnit;
+    }
+
+    public void setxUnit(int xUnit) {
+        this.xUnit = xUnit;
+    }
+
+    public int getyUnit() {
+        return yUnit;
+    }
+
+    public void setyUnit(int yUnit) {
+        this.yUnit = yUnit;
     }
 
     public int getX() {
@@ -31,7 +55,7 @@ public abstract class Entity {
     }
 
     public void setX(int x) {
-        this.x = x;
+        this.x = x * Sprite.SCALED_SIZE;
     }
 
     public int getY() {
@@ -39,7 +63,7 @@ public abstract class Entity {
     }
 
     public void setY(int y) {
-        this.y = y;
+        this.y = y * Sprite.SCALED_SIZE;
     }
 
     public Image getImg() {
