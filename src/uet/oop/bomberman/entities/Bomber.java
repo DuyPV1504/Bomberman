@@ -24,12 +24,15 @@ public class Bomber extends Entity {
 
             @Override
 
-            public void handle(KeyEvent event) {this.handleEvent(event);}
-            private void handleEvent(KeyEvent event) {
+            public void handle(KeyEvent event) {
+                this.handleEvent(event);
+            }
 
+            private void handleEvent(KeyEvent event) {
                 switch(event.getCode()) {
 
                     case UP: {
+                        System.out.println("here");
                         y += Sprite.SCALED_SIZE;
                         break;
                     }
@@ -64,10 +67,6 @@ public class Bomber extends Entity {
         move();
     }
 
-    @Override
-    public void update(List<Entity> entities ,List<Entity> stillObjects) {
-
-    }
 }
 
 

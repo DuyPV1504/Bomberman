@@ -26,7 +26,7 @@ public abstract class Entity {
     protected Rectangle collisionBox;
 
     //Khởi tạo đối tượng, chuyển từ tọa độ đơn vị sang tọa độ trong canvas
-    public Entity( int xUnit, int yUnit, Image img) {
+    public Entity( int yUnit, int xUnit, Image img) {
         this.xUnit = xUnit;
         this.yUnit = yUnit;
         this.x = xUnit * Sprite.SCALED_SIZE;
@@ -86,7 +86,5 @@ public abstract class Entity {
         gc.drawImage(img, x, y);
     }
     public abstract void update();
-
-    public abstract void update(List<Entity> entities, List<Entity> stillObjects);
 
 }

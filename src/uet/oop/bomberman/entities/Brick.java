@@ -4,8 +4,6 @@ import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
 import uet.oop.bomberman.graphics.Sprite;
 
-import java.util.List;
-
 public class Brick extends Entity {
     public Brick(int x, int y, Image img) {
         super(x, y, img);
@@ -17,8 +15,4 @@ public class Brick extends Entity {
 
     }
 
-    @Override
-    public void update(List<Entity> entities, List<Entity> stillObjects) {
-
-    }
 }

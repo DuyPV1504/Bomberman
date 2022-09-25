@@ -1,9 +1,6 @@
 package uet.oop.bomberman.entities;
 
 import javafx.scene.image.Image;
-import javafx.scene.shape.Rectangle;
-
-import java.util.List;
 
 public class Grass extends Entity {
 
@@ -16,8 +13,4 @@ public class Grass extends Entity {
 
     }
 
-    @Override
-    public void update(List<Entity> entities, List<Entity> stillObjects) {
-
-    }
 }

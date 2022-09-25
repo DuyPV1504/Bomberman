@@ -3,7 +3,6 @@ package uet.oop.bomberman;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -22,11 +21,12 @@ public class BombermanGame extends Application {
     public static final int WIDTH = 31;
     public static final int HEIGHT = 13;
     public static Scene scene;
+    public static List<Entity> entities = new ArrayList<>();
+    public static List<Entity> stillObjects = new ArrayList<>();
+    public static String[][] map = new String[HEIGHT][WIDTH];
 
     private GraphicsContext gc;
     private Canvas canvas;
-    private List<Entity> entities = new ArrayList<>();
-    private List<Entity> stillObjects = new ArrayList<>();
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
@@ -46,12 +46,7 @@ public class BombermanGame extends Application {
         Scene scene = new Scene(root);
 
         // bomberman init
-        Entity bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage()) {
-            @Override
-            public void update(List<Entity> entities, List<Entity> stillObjects) {
-
-            }
-        };
+        Entity bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
         entities.add(bomberman);
 
         AnimationTimer timer = new AnimationTimer() {
@@ -93,48 +88,51 @@ public class BombermanGame extends Application {
 
                     //Tạo Wall
                     Entity object;
-                    object = new Wall(j, i, Sprite.wall.getFxImage());
+                    object = new Wall(i, j, Sprite.wall.getFxImage());
                     stillObjects.add(object);
                 } else if (type.equals("*")) {
 
+                    //Đặt cỏ ở dưới
+                    Entity layer = new Grass(i, j, Sprite.grass.getFxImage());
+                    stillObjects.add(layer);
+
                     //Tạo Brick
                     Entity object;
-                    object = new Brick(j, i, Sprite.brick.getFxImage());
+                    object = new Brick(i, j, Sprite.brick.getFxImage());
                     stillObjects.add(object);
                 } else if (type.equals("x")) {
 
                     //Đặt cỏ ở dưới
-                    Entity layer = new Grass(j, i, Sprite.grass.getFxImage());
+                    Entity layer = new Grass(i, j, Sprite.grass.getFxImage());
                     stillObjects.add(layer);
 
                     //Tạo Portal
                     Entity object;
-                    object = new Portal(j, i, Sprite.portal.getFxImage());
+                    object = new Portal(i, j, Sprite.portal.getFxImage());
                     stillObjects.add(object);
                 } else if (type.equals("1")) {
 
                     //Đặt cỏ ở dưới
-                    Entity layer = new Grass(j, i, Sprite.grass.getFxImage());
+                    Entity layer = new Grass(i, j, Sprite.grass.getFxImage());
                     stillObjects.add(layer);
 
                     //Tạo enemy
                     Entity object;
-                    object = new Balloon(j, i, Sprite.balloom_left1.getFxImage());
+                    object = new Balloon(i, j, Sprite.balloom_left1.getFxImage());
                     entities.add(object);
                 } else if (type.equals("2")) {
 
                     //Đặt cỏ ở dưới
-                    Entity layer = new Grass(j, i, Sprite.grass.getFxImage());
+                    Entity layer = new Grass(i, j, Sprite.grass.getFxImage());
                     stillObjects.add(layer);
 
                     //Tạo enemy
                     Entity object;
-                    object = new Oneal(j, i, Sprite.oneal_left1.getFxImage());
+                    object = new Oneal(i, j, Sprite.oneal_left1.getFxImage());
                     entities.add(object);
                 } else if (type.equals("p")) {
                     //Đặt cỏ ở dưới
-                    Entity layer = new Grass(j, i, Sprite.grass.getFxImage());
-                    layer = new Grass(j, i, Sprite.grass.getFxImage());
+                    Entity layer = new Grass(i, j, Sprite.grass.getFxImage());
                     stillObjects.add(layer);
 
                     //Đặt bomberman ở vị trí này
@@ -144,9 +142,12 @@ public class BombermanGame extends Application {
 
                     //Tạo cỏ
                     Entity object;
-                    object = new Grass(j, i, Sprite.grass.getFxImage());
+                    object = new Grass(i, j, Sprite.grass.getFxImage());
                     stillObjects.add(object);
                 }
+
+                //Lưu map
+                map[i][j] = type;
             }
         }
 
@@ -158,7 +159,7 @@ public class BombermanGame extends Application {
             if (entities.indexOf(entity) == 2) {
                 entity.update();
             }
-            
+
         });
        /* bomberman.update(); */
     }
