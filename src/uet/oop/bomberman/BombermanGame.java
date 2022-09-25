@@ -3,6 +3,7 @@ package uet.oop.bomberman;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -20,7 +21,8 @@ public class BombermanGame extends Application {
     
     public static final int WIDTH = 31;
     public static final int HEIGHT = 13;
-    
+    public static Scene scene;
+
     private GraphicsContext gc;
     private Canvas canvas;
     private List<Entity> entities = new ArrayList<>();
@@ -44,7 +46,12 @@ public class BombermanGame extends Application {
         Scene scene = new Scene(root);
 
         // bomberman init
-        Entity bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
+        Entity bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage()) {
+            @Override
+            public void update(List<Entity> entities, List<Entity> stillObjects) {
+
+            }
+        };
         entities.add(bomberman);
 
         AnimationTimer timer = new AnimationTimer() {
@@ -131,8 +138,8 @@ public class BombermanGame extends Application {
                     stillObjects.add(layer);
 
                     //Đặt bomberman ở vị trí này
-                    entities.get(0).setX(j);
-                    entities.get(0).setY(i);
+                    /* entities.get(0).setX(j);
+                    entities.get(0).setY(i); */
                 } else {
 
                     //Tạo cỏ
@@ -148,11 +155,12 @@ public class BombermanGame extends Application {
 
     public void update() {
         entities.forEach(entity -> {
-            if (entities.indexOf(entity) == 2) {
+            if (entities.indexOf(entity) == 0) {
                 entity.update();
             }
             
         });
+       /* bomberman.update(); */
     }
 
     public void render() {

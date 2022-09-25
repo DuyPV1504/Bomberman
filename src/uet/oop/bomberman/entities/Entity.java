@@ -88,4 +88,5 @@ public abstract class Entity {
     public abstract void update();
 
     public abstract void update(List<Entity> entities, List<Entity> stillObjects);
+
 }
