@@ -155,7 +155,7 @@ public class BombermanGame extends Application {
 
     public void update() {
         entities.forEach(entity -> {
-            if (entities.indexOf(entity) == 0) {
+            if (entities.indexOf(entity) == 2) {
                 entity.update();
             }
             
