@@ -1,11 +1,16 @@
 package uet.oop.bomberman;
 
+import com.sun.deploy.security.JarSignature;
+import com.sun.prism.MultiTexture;
+import com.sun.prism.PresentableState;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Sprite;
@@ -17,7 +22,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class BombermanGame extends Application {
-    
+
     public static final int WIDTH = 31;
     public static final int HEIGHT = 13;
     public static Scene scene;
@@ -138,6 +143,7 @@ public class BombermanGame extends Application {
                     //Đặt bomberman ở vị trí này
                     /* entities.get(0).setX(j);
                     entities.get(0).setY(i); */
+
                 } else {
 
                     //Tạo cỏ
@@ -161,7 +167,8 @@ public class BombermanGame extends Application {
             }
 
         });
-       /* bomberman.update(); */
+        // bomberman.update();
+
     }
 
     public void render() {
