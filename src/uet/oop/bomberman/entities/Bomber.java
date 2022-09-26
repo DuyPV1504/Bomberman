@@ -23,7 +23,7 @@ public class Bomber extends Entity {
         this.collisionBox = new Rectangle(x + 3, y + 2, COLLISION_BOX_WIDTH, COLLISION_BOX_HEIGHT);
     }
 
-    /* private void move() {
+    private void move() {
         BombermanGame.scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent Keyevent) {
@@ -67,7 +67,8 @@ public class Bomber extends Entity {
                 // currStt = Bomber.IDLE;
             }
         });
-    }  */
+    }
+
     private void collisionUpdate() {
         this.collisionBox.setX(x + 3);
         this.collisionBox.setY(y + 2);
@@ -76,7 +77,7 @@ public class Bomber extends Entity {
     @Override
     public void update() {
         collisionUpdate();
-        // move();
+        move();
     }
 
 }

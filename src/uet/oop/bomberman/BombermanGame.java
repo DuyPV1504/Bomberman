@@ -1,6 +1,6 @@
 package uet.oop.bomberman;
 
-import com.sun.deploy.security.JarSignature;
+//import com.sun.deploy.security.JarSignature;
 import com.sun.prism.MultiTexture;
 import com.sun.prism.PresentableState;
 import javafx.animation.AnimationTimer;
@@ -48,7 +48,7 @@ public class BombermanGame extends Application {
         root.getChildren().add(canvas);
 
         // Tao scene
-        Scene scene = new Scene(root);
+        scene = new Scene(root);
 
         // bomberman init
         Entity bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
@@ -162,7 +162,7 @@ public class BombermanGame extends Application {
 
     public void update() {
         entities.forEach(entity -> {
-            if (entities.indexOf(entity) == 2) {
+            if (entities.indexOf(entity) == 2 || entities.indexOf(entity) == 0) {
                 entity.update();
             }
 
