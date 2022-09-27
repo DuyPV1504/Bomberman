@@ -11,12 +11,17 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Oneal extends Entity {
+
     private List<Pair<Integer, Integer>> road = new ArrayList<>();
     private String[][] map = new String[BombermanGame.HEIGHT][BombermanGame.WIDTH];
+    private int oldPlayerX;
+    private int oldPlayerY;
 
     public Oneal(int x, int y, Image img) {
         super(x, y, img);
         this.collisionBox = new Rectangle(x, y, Sprite.SCALED_SIZE, Sprite.SCALED_SIZE);
+        this.oldPlayerX = this.xUnit;
+        this.oldPlayerY = this.yUnit;
     }
 
     private void moveLeft(int nextX) {
@@ -134,34 +139,50 @@ public class Oneal extends Entity {
         //Tái hiện lại map
         createMap();
 
-        //Tìm đường đi
+        //Tọa độ của player
+        int PlayerX = BombermanGame.entities.get(0).getxUnit();
+        int PlayerY = BombermanGame.entities.get(0).getyUnit();
 
-        if (findRoad(xUnit, yUnit, 1, 1, map)) {
+        //Di chuyển
+        if (road.size() > 0) {
 
-            //Nếu tìm thấy đường đi thì di chuyển
-            if (road.size() > 0) {
+            Pair<Integer, Integer> next = road.get(road.size() - 1);
 
-                Pair<Integer, Integer> next = road.get(road.size() - 1);
+            if (next.getKey() > xUnit) {
 
-                if (next.getKey() > xUnit) {
+                moveRight(next.getKey() * Sprite.SCALED_SIZE);
 
-                    moveRight(next.getKey() * Sprite.SCALED_SIZE);
+            } else if (next.getKey() < xUnit) {
 
-                } else if (next.getKey() < xUnit) {
+                moveLeft(next.getKey() * Sprite.SCALED_SIZE);
 
-                    moveLeft(next.getKey() * Sprite.SCALED_SIZE);
+            } else if (next.getValue() > yUnit) {
 
-                } else if (next.getValue() > yUnit) {
+                moveDown(next.getValue() * Sprite.SCALED_SIZE);
 
-                    moveDown(next.getValue() * Sprite.SCALED_SIZE);
+            } else if (next.getValue() < yUnit) {
 
-                } else if (next.getValue() < yUnit) {
+                moveUp(next.getValue() * Sprite.SCALED_SIZE);
 
-                    moveUp(next.getValue() * Sprite.SCALED_SIZE);
-
-                }
             }
         }
+
+
+        //Nếu player chưa di chuyển thì không cần tìm đường đi
+        if (PlayerX != oldPlayerX || PlayerY != oldPlayerY) {
+
+            //Tìm đường đi
+            road.clear(); //Xóa đường đi cũ
+            if (findRoad(xUnit, yUnit, PlayerX, PlayerY, map)) {
+
+                //Cập nhật lại tọa độ của player
+                oldPlayerX = PlayerX;
+                oldPlayerY = PlayerY;
+
+            }
+
+        }
+
 
 
     }

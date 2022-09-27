@@ -51,7 +51,7 @@ public class BombermanGame extends Application {
         scene = new Scene(root);
 
         // bomberman init
-        Entity bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
+        Entity bomberman = new Bomber(6, 7, Sprite.player_right.getFxImage());
         entities.add(bomberman);
 
         AnimationTimer timer = new AnimationTimer() {
