@@ -21,21 +21,32 @@ public class Bomber extends Entity {
 
     private String[][] map = new String[BombermanGame.HEIGHT][BombermanGame.WIDTH];
 
-    private final boolean isDead;
-    private final int maxBomb; // số lượng bom tối đa đặt trên map
-    private final int powerflame; // độ dài bom
     private int COLLISION_BOX_WIDTH = 15;
     private int COLLISION_BOX_HEIGHT = 28;
 
+    private double dirX = 0;
+    private double dirY = 0;
+
+    public static final int IDLE = 0;
+    public static final int DOWN = 1;
+    public static final int UP = 2;
+    public static final int LEFT = 3;
+    public static final int RIGHT = 4;
+    public static final int DEAD = 5;
+    private int currStt = Bomber.IDLE;
+
+    private boolean canMove = false;
+
     public Bomber(int x, int y, Image img) {
-        super( x, y, img);
-        this.isDead = false; // ban đầu còn sống
-        this.maxBomb = 1; // đặt tối đa được 1 quả bom
-        this.powerflame = 1; // bom có độ dài là 1
+        super(x, y, img);
         this.collisionBox = new Rectangle(x + 3, y + 2, COLLISION_BOX_WIDTH, COLLISION_BOX_HEIGHT);
     }
 
-     private void move() {
+    public Bomber(int xUnit, int yUnit, Image img, String direction, int step, int stepCount) {
+        super(xUnit, yUnit, img, direction, step, stepCount);
+    }
+
+    private void move() {
         BombermanGame.scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent Keyevent) {
@@ -43,15 +54,21 @@ public class Bomber extends Entity {
             }
 
             private void handleEvent(KeyEvent keyEvent) {
-                switch (keyEvent.getCode()){
+                switch (keyEvent.getCode()) {
                     case UP: {
                         // currStt = Bomber.UP;
-                        y -= Sprite.SCALED_SIZE;
+                        direction = "up";
+                        //y -= Sprite.SCALED_SIZE/2;
+                        dirX = 0;
+                        dirY = -1;
                         break;
                     }
                     case DOWN: {
                         // currStt = Bomber.DOWN;
-                        y += Sprite.SCALED_SIZE;
+                        direction = "down";
+                        //y += Sprite.SCALED_SIZE/2;
+                        dirX = 0;
+                        dirY = 1;
                         break;
                     }
                     case LEFT: {
@@ -66,31 +83,26 @@ public class Bomber extends Entity {
                     }
                     default:
                         break;
-                        // currStt = Bomber.IDLE;
+                    // currStt = Bomber.IDLE;
 
                 }
-
-
             }
         });
 
         scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
             public void handle(KeyEvent e) {
                 // currStt = Bomber.IDLE;
+                step = 0;
+                direction = "idle";
+                dirX = 0;
+                dirY = 0;
             }
         });
     }
+
     private void collisionUpdate() {
         this.collisionBox.setX(x + 3);
         this.collisionBox.setY(y + 2);
-    }
-
-
-    @Override
-    public void update() {
-        collisionUpdate();
-         move();
-        createMap();
     }
 
     private void createMap() {
@@ -102,6 +114,12 @@ public class Bomber extends Entity {
         }
     }
 
+
+    @Override
+    public void update() {
+        collisionUpdate();
+        move();
+    }
 }
 
 
