@@ -56,28 +56,18 @@ public class Bomber extends Entity {
             private void handleEvent(KeyEvent keyEvent) {
                 switch (keyEvent.getCode()) {
                     case UP: {
-                        // currStt = Bomber.UP;
-                        direction = "up";
-                        //y -= Sprite.SCALED_SIZE/2;
-                        dirX = 0;
-                        dirY = -1;
+                        y -= Sprite.SCALED_SIZE;
                         break;
                     }
                     case DOWN: {
-                        // currStt = Bomber.DOWN;
-                        direction = "down";
-                        //y += Sprite.SCALED_SIZE/2;
-                        dirX = 0;
-                        dirY = 1;
+                        y += Sprite.SCALED_SIZE;
                         break;
                     }
                     case LEFT: {
-                        // currStt = Bomber.LEFT;
                         x -= Sprite.SCALED_SIZE;
                         break;
                     }
                     case RIGHT: {
-                        // currStt = Bomber.RIGHT;
                         x += Sprite.SCALED_SIZE;
                         break;
                     }
@@ -91,11 +81,7 @@ public class Bomber extends Entity {
 
         scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
             public void handle(KeyEvent e) {
-                // currStt = Bomber.IDLE;
                 step = 0;
-                direction = "idle";
-                dirX = 0;
-                dirY = 0;
             }
         });
     }
