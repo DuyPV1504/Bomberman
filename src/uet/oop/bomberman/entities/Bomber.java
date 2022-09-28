@@ -9,6 +9,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Pair;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.entities.animation.Animation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,13 +101,89 @@ public class Bomber extends Entity {
         }
     }
 
+    public void loadAnimation() {
 
+        BombermanGame.scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                this.handleEvent(keyEvent);
+            }
+
+            private void handleEvent(KeyEvent keyEvent) {
+
+                switch (keyEvent.getCode()) {
+                    case UP: {
+                        if (step == 0) {
+                            img = Sprite.player_up.getFxImage();
+                        }
+                        if (step == 1) {
+                            img = Sprite.player_up_1.getFxImage();
+                        }
+                        if (step == 2) {
+                            img = Sprite.player_up.getFxImage();
+                        }
+                        if (step == 3) {
+                            img = Sprite.player_up_2.getFxImage();
+                        }
+                        break;
+                    }
+                    case DOWN: {
+                        if (step == 0) {
+                            img = Sprite.player_down.getFxImage();
+                        }
+                        if (step == 1) {
+                            img = Sprite.player_down_1.getFxImage();
+                        }
+                        if (step == 2) {
+                            img = Sprite.player_down.getFxImage();
+                        }
+                        if (step == 3) {
+                            img = Sprite.player_down_2.getFxImage();
+                        }
+                        break;
+                    }
+                    case LEFT: {
+                        if (step == 0) {
+                            img = Sprite.player_left.getFxImage();
+                        }
+                        if (step == 1) {
+                            img = Sprite.player_left_1.getFxImage();
+                        }
+                        if (step == 2) {
+                            img = Sprite.player_left.getFxImage();
+                        }
+                        if (step == 3) {
+                            img = Sprite.player_left_2.getFxImage();
+                        }
+                        break;
+                    }
+                    case RIGHT: {
+                        if (step == 0) {
+                            img = Sprite.player_right.getFxImage();
+                        }
+                        if (step == 1) {
+                            img = Sprite.player_right_1.getFxImage();
+                        }
+                        if (step == 2) {
+                            img = Sprite.player_right.getFxImage();
+                        }
+                        if (step == 3) {
+                            img = Sprite.player_right_2.getFxImage();
+                        }
+                        break;
+                    }
+                }
+            }
+        });
+    }
+}
     @Override
     public void update() {
         collisionUpdate();
         move();
     }
 }
+
 
 
 

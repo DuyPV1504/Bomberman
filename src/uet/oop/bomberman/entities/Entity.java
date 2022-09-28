@@ -20,8 +20,6 @@ public abstract class Entity {
     //Tọa độ Y thực tế trong mảng
     protected int yUnit;
 
-    protected String direction = "idle";
-
     protected int step = 0;
     protected int stepCount = 0;
 
@@ -40,7 +38,6 @@ public abstract class Entity {
     }
 
     public Entity(int xUnit, int yUnit, Image img, String direction, int step, int stepCount) {
-        this.direction = direction;
         this.step = step;
         this.stepCount = stepCount;
     }
