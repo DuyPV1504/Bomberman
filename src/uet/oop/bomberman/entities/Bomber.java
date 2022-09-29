@@ -9,7 +9,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Pair;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.graphics.Sprite;
-import uet.oop.bomberman.entities.animation.Animation;
+//import uet.oop.bomberman.entities.animation.Animation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -176,7 +176,7 @@ public class Bomber extends Entity {
             }
         });
     }
-}
+
     @Override
     public void update() {
         collisionUpdate();
