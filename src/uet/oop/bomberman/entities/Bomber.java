@@ -6,21 +6,44 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Pair;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.graphics.Sprite;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static uet.oop.bomberman.BombermanGame.scene;
 
 public class Bomber extends Entity {
 
+    private List<Pair<Integer, Integer>> road = new ArrayList<>();
+
+    private String[][] map = new String[BombermanGame.HEIGHT][BombermanGame.WIDTH];
+
     private int COLLISION_BOX_WIDTH = 15;
     private int COLLISION_BOX_HEIGHT = 28;
 
+    private double dirX = 0;
+    private double dirY = 0;
+
+    public static final int IDLE = 0;
+    public static final int DOWN = 1;
+    public static final int UP = 2;
+    public static final int LEFT = 3;
+    public static final int RIGHT = 4;
+    public static final int DEAD = 5;
+    private int currStt = Bomber.IDLE;
+
+    private boolean canMove = false;
+
     public Bomber(int x, int y, Image img) {
-        super( x, y, img);
+        super(x, y, img);
         this.collisionBox = new Rectangle(x + 3, y + 2, COLLISION_BOX_WIDTH, COLLISION_BOX_HEIGHT);
+    }
+
+    public Bomber(int xUnit, int yUnit, Image img, String direction, int step, int stepCount) {
+        super(xUnit, yUnit, img, direction, step, stepCount);
     }
 
     private void move() {
@@ -31,40 +54,34 @@ public class Bomber extends Entity {
             }
 
             private void handleEvent(KeyEvent keyEvent) {
-                switch (keyEvent.getCode()){
+                switch (keyEvent.getCode()) {
                     case UP: {
-                        // currStt = Bomber.UP;
-                        x -= Sprite.SCALED_SIZE;
-                        break;
-                    }
-                    case DOWN: {
-                        // currStt = Bomber.DOWN;
-                        x += Sprite.SCALED_SIZE;
-                        break;
-                    }
-                    case LEFT: {
-                        // currStt = Bomber.LEFT;
                         y -= Sprite.SCALED_SIZE;
                         break;
                     }
-                    case RIGHT: {
-                        // currStt = Bomber.RIGHT;
+                    case DOWN: {
                         y += Sprite.SCALED_SIZE;
+                        break;
+                    }
+                    case LEFT: {
+                        x -= Sprite.SCALED_SIZE;
+                        break;
+                    }
+                    case RIGHT: {
+                        x += Sprite.SCALED_SIZE;
                         break;
                     }
                     default:
                         break;
-                        // currStt = Bomber.IDLE;
+                    // currStt = Bomber.IDLE;
 
                 }
-
-
             }
         });
 
         scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
             public void handle(KeyEvent e) {
-                // currStt = Bomber.IDLE;
+                step = 0;
             }
         });
     }
@@ -74,12 +91,23 @@ public class Bomber extends Entity {
         this.collisionBox.setY(y + 2);
     }
 
+    private void createMap() {
+        //Deep copy map
+        for (int i = 0; i < BombermanGame.HEIGHT; i++) {
+            for (int j = 0; j < BombermanGame.WIDTH; j++) {
+                map[i][j] = BombermanGame.map[i][j];
+            }
+        }
+    }
+
+
     @Override
     public void update() {
         collisionUpdate();
         move();
     }
-
 }
+
+
 
 

@@ -20,6 +20,11 @@ public abstract class Entity {
     //Tọa độ Y thực tế trong mảng
     protected int yUnit;
 
+    protected String direction = "idle";
+
+    protected int step = 0;
+    protected int stepCount = 0;
+
     protected Image img;
 
     //Collision box
@@ -33,6 +38,13 @@ public abstract class Entity {
         this.y = yUnit * Sprite.SCALED_SIZE;
         this.img = img;
     }
+
+    public Entity(int xUnit, int yUnit, Image img, String direction, int step, int stepCount) {
+        this.direction = direction;
+        this.step = step;
+        this.stepCount = stepCount;
+    }
+
 
     public int getxUnit() {
         return xUnit;
@@ -84,6 +96,22 @@ public abstract class Entity {
 
     public void render(GraphicsContext gc) {
         gc.drawImage(img, x, y);
+    }
+
+    public int getStep() {
+        return step;
+    }
+
+    public void setStep(int step) {
+        this.step = step;
+    }
+
+    public int getStepCount() {
+        return stepCount;
+    }
+
+    public void setStepCount(int stepCount) {
+        this.stepCount = stepCount;
     }
     public abstract void update();
 
