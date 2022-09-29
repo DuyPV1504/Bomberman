@@ -111,5 +111,4 @@ public abstract class Entity {
         this.stepCount = stepCount;
     }
     public abstract void update();
-
 }

@@ -24,6 +24,17 @@ public class Oneal extends Entity {
         this.oldPlayerY = this.yUnit;
     }
 
+    /**
+     * Update collision box to oneal position.
+     */
+    private void collisionUpdate() {
+        this.collisionBox.setX(x);
+        this.collisionBox.setY(y);
+    }
+
+    /**
+     * 4 direction for moving.
+     */
     private void moveLeft(int nextX) {
         if (x > nextX) {
             x -= 1;
@@ -36,6 +47,8 @@ public class Oneal extends Entity {
             //Xóa điểm cuối trong đường đi
             road.remove(road.size() - 1);
         }
+
+
     }
 
     private void moveRight(int nextX) {
@@ -81,8 +94,11 @@ public class Oneal extends Entity {
         }
     }
 
+    /**
+     * Pathfinding.
+     */
     private boolean findRoad(int currX, int currY, int PlayerX, int PlayerY, String[][] map) {
-        String[] obstacle = {"#","*","x","b","f","1","2","s","v"};
+        String[] obstacle = {"#","*","x","v"};
 
         //Nếu thấy player thì trả về true
         if (currX == PlayerX && currY == PlayerY) {
@@ -133,6 +149,18 @@ public class Oneal extends Entity {
         return false;
     }
 
+    /**
+     * Tái hiện lại map.
+     */
+    private void createMap() {
+        //Deep copy map
+        for (int i = 0; i < BombermanGame.HEIGHT; i++) {
+            for (int j = 0; j < BombermanGame.WIDTH; j++) {
+                map[i][j] = BombermanGame.map[i][j];
+            }
+        }
+    }
+
     @Override
     public void update() {
 
@@ -145,6 +173,9 @@ public class Oneal extends Entity {
 
         //Di chuyển
         if (road.size() > 0) {
+
+            //Khôi phục lại map
+            createMap();
 
             Pair<Integer, Integer> next = road.get(road.size() - 1);
 
@@ -183,17 +214,9 @@ public class Oneal extends Entity {
 
         }
 
+        //Update collsion box
+        collisionUpdate();
 
-
-    }
-
-    private void createMap() {
-        //Deep copy map
-        for (int i = 0; i < BombermanGame.HEIGHT; i++) {
-            for (int j = 0; j < BombermanGame.WIDTH; j++) {
-                map[i][j] = BombermanGame.map[i][j];
-            }
-        }
     }
 
 }

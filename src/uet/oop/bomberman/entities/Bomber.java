@@ -58,18 +58,22 @@ public class Bomber extends Entity {
                 switch (keyEvent.getCode()) {
                     case UP: {
                         y -= Sprite.SCALED_SIZE;
+                        setyUnit(yUnit - 1);
                         break;
                     }
                     case DOWN: {
                         y += Sprite.SCALED_SIZE;
+                        setyUnit(yUnit + 1);
                         break;
                     }
                     case LEFT: {
                         x -= Sprite.SCALED_SIZE;
+                        setxUnit(xUnit - 1);
                         break;
                     }
                     case RIGHT: {
                         x += Sprite.SCALED_SIZE;
+                        setxUnit(xUnit + 1);
                         break;
                     }
                     default:
