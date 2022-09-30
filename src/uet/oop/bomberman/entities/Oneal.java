@@ -16,6 +16,8 @@ public class Oneal extends Entity {
     private String[][] map = new String[BombermanGame.HEIGHT][BombermanGame.WIDTH];
     private int oldPlayerX;
     private int oldPlayerY;
+    private int animate = 0;
+    private boolean isInsideBlock = true;
 
     public Oneal(int x, int y, Image img) {
         super(x, y, img);
@@ -38,6 +40,9 @@ public class Oneal extends Entity {
     private void moveLeft(int nextX) {
         if (x > nextX) {
             x -= 1;
+
+            //Xác định enemy đang không ở trong block
+            isInsideBlock = false;
         } else {
 
             //Update lại tọa độ trong mảng
@@ -46,6 +51,9 @@ public class Oneal extends Entity {
 
             //Xóa điểm cuối trong đường đi
             road.remove(road.size() - 1);
+
+            //Xác định enemy đang ở trong block
+            isInsideBlock = true;
         }
 
 
@@ -54,6 +62,9 @@ public class Oneal extends Entity {
     private void moveRight(int nextX) {
         if (x < nextX) {
             x += 1;
+
+            //Xác định enemy đang không ở trong block
+            isInsideBlock = false;
         } else {
 
             //Update lại tọa độ trong mảng
@@ -62,12 +73,18 @@ public class Oneal extends Entity {
 
             //Xóa điểm đầu tiên trong danh sách
             road.remove(road.size() - 1);
+
+            //Xác định enemy đang ở trong block
+            isInsideBlock = true;
         }
     }
 
     private void moveUp(int nextY) {
         if (y > nextY) {
             y -= 1;
+
+            //Xác định enemy đang không ở trong block
+            isInsideBlock = false;
         } else {
 
             //Update lại tọa độ trong mảng
@@ -76,6 +93,9 @@ public class Oneal extends Entity {
 
             //Xóa điểm đầu tiên trong danh sách
             road.remove(road.size() - 1);
+
+            //Xác định enemy đang ở trong block
+            isInsideBlock = true;
         }
     }
 
@@ -83,6 +103,9 @@ public class Oneal extends Entity {
 
         if (y < nextY) {
             y += 1;
+
+            //Xác định enemy đang không ở trong block
+            isInsideBlock = false;
         } else {
 
             //Update lại tọa độ trong mảng
@@ -91,6 +114,9 @@ public class Oneal extends Entity {
 
             //Xóa điểm đầu tiên trong danh sách
             road.remove(road.size() - 1);
+
+            //Xác định enemy đang ở trong block
+            isInsideBlock = true;
         }
     }
 
@@ -182,19 +208,19 @@ public class Oneal extends Entity {
             if (next.getKey() > xUnit) {
 
                 moveRight(next.getKey() * Sprite.SCALED_SIZE);
-
+                this.setImg(Sprite.movingSprite(Sprite.balloom_right1, Sprite.balloom_right2, Sprite.balloom_right3, animate, 60).getFxImage());
             } else if (next.getKey() < xUnit) {
 
                 moveLeft(next.getKey() * Sprite.SCALED_SIZE);
-
+                this.setImg(Sprite.movingSprite(Sprite.balloom_right1, Sprite.balloom_right2, Sprite.balloom_right3, animate, 60).getFxImage());
             } else if (next.getValue() > yUnit) {
 
                 moveDown(next.getValue() * Sprite.SCALED_SIZE);
-
+                this.setImg(Sprite.movingSprite(Sprite.balloom_right1, Sprite.balloom_right2, Sprite.balloom_right3, animate, 60).getFxImage());
             } else if (next.getValue() < yUnit) {
 
                 moveUp(next.getValue() * Sprite.SCALED_SIZE);
-
+                this.setImg(Sprite.movingSprite(Sprite.balloom_right1, Sprite.balloom_right2, Sprite.balloom_right3, animate, 60).getFxImage());
             }
         }
 
@@ -202,21 +228,24 @@ public class Oneal extends Entity {
         //Nếu player chưa di chuyển thì không cần tìm đường đi
         if (PlayerX != oldPlayerX || PlayerY != oldPlayerY) {
 
-            //Tìm đường đi
-            road.clear(); //Xóa đường đi cũ
-            if (findRoad(xUnit, yUnit, PlayerX, PlayerY, map)) {
+            //Chỉ tìm khi ở trong block
+            if (isInsideBlock) {
 
-                //Cập nhật lại tọa độ của player
-                oldPlayerX = PlayerX;
-                oldPlayerY = PlayerY;
+                //Tìm đường đi
+                road.clear(); //Xóa đường đi cũ
 
+                if (findRoad(xUnit, yUnit, PlayerX, PlayerY, map)) {
+
+                    //Cập nhật lại tọa độ của player
+                    oldPlayerX = PlayerX;
+                    oldPlayerY = PlayerY;
+                }
             }
-
         }
 
-        //Update collsion box
+        //Update collsion box và animation
         collisionUpdate();
-
+        animate++;
     }
 
 }
