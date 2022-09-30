@@ -120,6 +120,7 @@ public class Oneal extends Entity {
         }
     }
 
+
     /**
      * Pathfinding.
      */
@@ -208,20 +209,18 @@ public class Oneal extends Entity {
             if (next.getKey() > xUnit) {
 
                 moveRight(next.getKey() * Sprite.SCALED_SIZE);
-                this.setImg(Sprite.movingSprite(Sprite.balloom_right1, Sprite.balloom_right2, Sprite.balloom_right3, animate, 60).getFxImage());
             } else if (next.getKey() < xUnit) {
 
                 moveLeft(next.getKey() * Sprite.SCALED_SIZE);
-                this.setImg(Sprite.movingSprite(Sprite.balloom_right1, Sprite.balloom_right2, Sprite.balloom_right3, animate, 60).getFxImage());
             } else if (next.getValue() > yUnit) {
 
                 moveDown(next.getValue() * Sprite.SCALED_SIZE);
-                this.setImg(Sprite.movingSprite(Sprite.balloom_right1, Sprite.balloom_right2, Sprite.balloom_right3, animate, 60).getFxImage());
             } else if (next.getValue() < yUnit) {
 
                 moveUp(next.getValue() * Sprite.SCALED_SIZE);
-                this.setImg(Sprite.movingSprite(Sprite.balloom_right1, Sprite.balloom_right2, Sprite.balloom_right3, animate, 60).getFxImage());
             }
+
+            this.setImg(Sprite.movingSprite(Sprite.balloom_right1, Sprite.balloom_right2, Sprite.balloom_right3, animate, 60).getFxImage());
         }
 
 

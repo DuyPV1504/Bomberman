@@ -157,6 +157,10 @@ public class BombermanGame extends Application {
             }
         }
 
+        //Bomb init
+        Entity bomb = new Bomb(1, 16, Sprite.bomb.getFxImage());
+        stillObjects.add(bomb);
+
         myReader.close();
     }
 
@@ -167,8 +171,8 @@ public class BombermanGame extends Application {
             }
 
         });
-        // bomberman.update();
 
+        stillObjects.forEach(Entity::update);
     }
 
     public void render() {
