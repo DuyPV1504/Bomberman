@@ -9,7 +9,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Pair;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.graphics.Sprite;
-//import uet.oop.bomberman.entities.animation.Animation;
+import uet.oop.bomberman.utils.Collision;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,16 +26,16 @@ public class Bomber extends Entity {
     private int COLLISION_BOX_WIDTH = 15;
     private int COLLISION_BOX_HEIGHT = 28;
 
-    private double dirX = 0;
-    private double dirY = 0;
 
-    public static final int IDLE = 0;
+    /*public static final int IDLE = 0;
     public static final int DOWN = 1;
     public static final int UP = 2;
     public static final int LEFT = 3;
     public static final int RIGHT = 4;
     public static final int DEAD = 5;
     private int currStt = Bomber.IDLE;
+
+     */
 
     private boolean canMove = false;
 
@@ -87,6 +88,9 @@ public class Bomber extends Entity {
         scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
             public void handle(KeyEvent e) {
                 step = 0;
+                stepCount = 0;
+                setxUnit(xUnit);
+                setyUnit(yUnit);
             }
         });
     }
@@ -180,11 +184,44 @@ public class Bomber extends Entity {
             }
         });
     }
-
     @Override
     public void update() {
         collisionUpdate();
         move();
+        if (canMove) {
+            canMove = false;
+        }
+        BombermanGame.scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            public void handle(KeyEvent keyEvent) {
+                this.handleEvent(keyEvent);
+        }
+            private void handleEvent(KeyEvent keyEvent) {
+                switch (keyEvent.getCode()) {
+                    case UP: {
+                        if (Collision.colliSionUp(this.xUnit, this.yUnit))
+                            canMove = true;
+                        break;
+                    }
+                    case DOWN: {
+                        if (Collision.collisionDown(this.x, this.y))
+                            canMove = true;
+                        break;
+                    }
+                    case LEFT: {
+                        if (Collision.collisionLeft(this.x, this.y))
+                            canMove = true;
+                        break;
+                    }
+                    case RIGHT: {
+                        if (Collision.collisionRight(this.x, this.y))
+                            canMove = true;
+                        break;
+                    }
+                    default:
+                        break;
+                }
+                }
+            });
     }
 }
 

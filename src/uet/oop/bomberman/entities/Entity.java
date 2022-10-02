@@ -42,7 +42,6 @@ public abstract class Entity {
         this.stepCount = stepCount;
     }
 
-
     public int getxUnit() {
         return xUnit;
     }
