@@ -1,5 +1,6 @@
 package uet.oop.bomberman.entities;
 
+import ActiveEntity.Control;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -26,7 +27,9 @@ public class Bomber extends Entity {
     private int COLLISION_BOX_WIDTH = 15;
     private int COLLISION_BOX_HEIGHT = 28;
 
-
+    private String direction = "stay";
+    private int speed_x = 0;
+    private int speed_y = 0;
     /*public static final int IDLE = 0;
     public static final int DOWN = 1;
     public static final int UP = 2;
@@ -58,23 +61,35 @@ public class Bomber extends Entity {
             private void handleEvent(KeyEvent keyEvent) {
                 switch (keyEvent.getCode()) {
                     case UP: {
-                        y -= Sprite.SCALED_SIZE;
-                        setyUnit(yUnit - 1);
+                        //y -= Sprite.SCALED_SIZE;
+                        speed_y = -1;
+                        speed_x = 0;
+                        direction = "up";
+                        //setyUnit(yUnit - 1);
                         break;
                     }
                     case DOWN: {
-                        y += Sprite.SCALED_SIZE;
-                        setyUnit(yUnit + 1);
+                        //y += Sprite.SCALED_SIZE;
+                        speed_y = 1;
+                        speed_x = 0;
+                        direction = "down";
+                        //setyUnit(yUnit + 1);
                         break;
                     }
                     case LEFT: {
-                        x -= Sprite.SCALED_SIZE;
-                        setxUnit(xUnit - 1);
+                        //x -= Sprite.SCALED_SIZE;
+                        speed_x = -1;
+                        speed_y = 0;
+                        direction = "left";
+                        //setxUnit(xUnit - 1);
                         break;
                     }
                     case RIGHT: {
-                        x += Sprite.SCALED_SIZE;
-                        setxUnit(xUnit + 1);
+                        //x += Sprite.SCALED_SIZE;
+                        speed_x = 1;
+                        speed_y = 0;
+                        direction = "right";
+                        //setxUnit(xUnit + 1);
                         break;
                     }
                     default:
@@ -89,6 +104,8 @@ public class Bomber extends Entity {
             public void handle(KeyEvent e) {
                 step = 0;
                 stepCount = 0;
+                loadAnimation();
+                direction = "stay";
                 setxUnit(xUnit);
                 setyUnit(yUnit);
             }
@@ -110,118 +127,121 @@ public class Bomber extends Entity {
     }
 
     public void loadAnimation() {
-
-        BombermanGame.scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent keyEvent) {
-                this.handleEvent(keyEvent);
-            }
-
-            private void handleEvent(KeyEvent keyEvent) {
-
-                switch (keyEvent.getCode()) {
-                    case UP: {
-                        if (step == 0) {
-                            img = Sprite.player_up.getFxImage();
-                        }
-                        if (step == 1) {
-                            img = Sprite.player_up_1.getFxImage();
-                        }
-                        if (step == 2) {
-                            img = Sprite.player_up.getFxImage();
-                        }
-                        if (step == 3) {
-                            img = Sprite.player_up_2.getFxImage();
-                        }
-                        break;
-                    }
-                    case DOWN: {
-                        if (step == 0) {
-                            img = Sprite.player_down.getFxImage();
-                        }
-                        if (step == 1) {
-                            img = Sprite.player_down_1.getFxImage();
-                        }
-                        if (step == 2) {
-                            img = Sprite.player_down.getFxImage();
-                        }
-                        if (step == 3) {
-                            img = Sprite.player_down_2.getFxImage();
-                        }
-                        break;
-                    }
-                    case LEFT: {
-                        if (step == 0) {
-                            img = Sprite.player_left.getFxImage();
-                        }
-                        if (step == 1) {
-                            img = Sprite.player_left_1.getFxImage();
-                        }
-                        if (step == 2) {
-                            img = Sprite.player_left.getFxImage();
-                        }
-                        if (step == 3) {
-                            img = Sprite.player_left_2.getFxImage();
-                        }
-                        break;
-                    }
-                    case RIGHT: {
-                        if (step == 0) {
-                            img = Sprite.player_right.getFxImage();
-                        }
-                        if (step == 1) {
-                            img = Sprite.player_right_1.getFxImage();
-                        }
-                        if (step == 2) {
-                            img = Sprite.player_right.getFxImage();
-                        }
-                        if (step == 3) {
-                            img = Sprite.player_right_2.getFxImage();
-                        }
-                        break;
-                    }
+        switch (direction) {
+            case "up": {
+                if (step == 0) {
+                    img = Sprite.player_up.getFxImage();
                 }
+                if (step == 1) {
+                    img = Sprite.player_up_1.getFxImage();
+                }
+                if (step == 2) {
+                    img = Sprite.player_up.getFxImage();
+                }
+                if (step == 3) {
+                    img = Sprite.player_up_2.getFxImage();
+                }
+                break;
             }
-        });
+            case "down": {
+                if (step == 0) {
+                    img = Sprite.player_down.getFxImage();
+                }
+                if (step == 1) {
+                    img = Sprite.player_down_1.getFxImage();
+                }
+                if (step == 2) {
+                    img = Sprite.player_down.getFxImage();
+                }
+                if (step == 3) {
+                    img = Sprite.player_down_2.getFxImage();
+                }
+                break;
+            }
+            case "left": {
+                if (step == 0) {
+                    img = Sprite.player_left.getFxImage();
+                }
+                if (step == 1) {
+                    img = Sprite.player_left_1.getFxImage();
+                }
+                if (step == 2) {
+                    img = Sprite.player_left.getFxImage();
+                }
+                if (step == 3) {
+                    img = Sprite.player_left_2.getFxImage();
+                }
+                break;
+            }
+            case "right": {
+                if (step == 0) {
+                    img = Sprite.player_right.getFxImage();
+                }
+                if (step == 1) {
+                    img = Sprite.player_right_1.getFxImage();
+                }
+                if (step == 2) {
+                    img = Sprite.player_right.getFxImage();
+                }
+                if (step == 3) {
+                    img = Sprite.player_right_2.getFxImage();
+                }
+                break;
+            }
+        }
     }
+
     @Override
     public void update() {
         collisionUpdate();
         move();
+        switch (direction) {
+            case "up": {
+                if (Control.collisionUp(this.x, this.y))
+                    canMove = true;
+                break;
+            }
+            case "down": {
+                if (Control.collisionDown(this.x, this.y))
+                    canMove = true;
+                break;
+            }
+            case "left": {
+                if (Control.collisionLeft(this.x, this.y))
+                    canMove = true;
+                break;
+            }
+            case "right": {
+                if (Control.collisionRight(this.x, this.y))
+                    canMove = true;
+                break;
+            }
+            default:
+                break;
+        }
+
         if (canMove) {
+            x = x + speed_x;
+            setxUnit(x / 32);
+            y = y + speed_y;
+            setyUnit(y / 32);
             canMove = false;
         }
-        BombermanGame.scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            public void handle(KeyEvent keyEvent) {
-                this.handleEvent(keyEvent);
+
+        if (!direction.equals("stay")) {
+            stepCount++;
+            loadAnimation();
         }
-            private void handleEvent(KeyEvent keyEvent) {
-                switch (keyEvent.getCode()) {
-                    case UP: {
-                        if (Collision.colliSionUp(this.xUnit, this.yUnit))
-                            canMove = true;
-                        break;
-                    }
-                    case DOWN: {
-                        if (Collision.collisionDown(this.x, this.y))
-                            canMove = true;
-                        break;
-                    }
-                    case LEFT: {
-                        if (Collision.collisionLeft(this.x, this.y))
-                            canMove = true;
-                        break;
-                    }
-                    case RIGHT: {
-                        if (Collision.collisionRight(this.x, this.y))
-                            canMove = true;
-                        break;
-                    }
-                    default:
-                        break;
-                }
-                }
-            });
+        else {
+            stepCount = 0;
+        }
+        if (stepCount == 3) {
+            if (step != 3) {
+                step++;
+            }
+            else step = 0;
+            stepCount = 0;
+        }
     }
 }
 
