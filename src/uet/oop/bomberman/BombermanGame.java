@@ -18,6 +18,7 @@ import uet.oop.bomberman.graphics.Sprite;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -158,7 +159,7 @@ public class BombermanGame extends Application {
         }
 
         //Bomb init
-        Entity bomb = new Bomb(1, 16, Sprite.bomb.getFxImage());
+        Entity bomb = new Bomb(1, 15, Sprite.bomb.getFxImage());
         stillObjects.add(bomb);
 
         myReader.close();
@@ -166,13 +167,16 @@ public class BombermanGame extends Application {
 
     public void update() {
         entities.forEach(entity -> {
-            if (entities.indexOf(entity) == 2 || entities.indexOf(entity) == 0) {
-                entity.update();
-            }
-
+            entity.update();
         });
+        entities.removeIf(entity -> entity.getTimeToDie() == 0);
 
-        stillObjects.forEach(Entity::update);
+        stillObjects.forEach(entity -> {
+            entity.update();
+        });
+        stillObjects.removeIf(entity -> entity.getTimeToDie() == 0);
+
+
     }
 
     public void render() {

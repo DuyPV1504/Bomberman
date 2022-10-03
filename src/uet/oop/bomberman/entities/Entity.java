@@ -22,11 +22,13 @@ public abstract class Entity {
 
     protected int step = 0;
     protected int stepCount = 0;
+    protected int timeToDie = 40;
 
     protected Image img;
 
     //Collision box
     protected Rectangle collisionBox;
+    protected boolean isAlive = true;
 
     //Khởi tạo đối tượng, chuyển từ tọa độ đơn vị sang tọa độ trong canvas
     public Entity( int yUnit, int xUnit, Image img) {
@@ -90,10 +92,6 @@ public abstract class Entity {
         this.collisionBox = collisionBox;
     }
 
-    public void render(GraphicsContext gc) {
-        gc.drawImage(img, x, y);
-    }
-
     public int getStep() {
         return step;
     }
@@ -109,5 +107,26 @@ public abstract class Entity {
     public void setStepCount(int stepCount) {
         this.stepCount = stepCount;
     }
+
+    public int getTimeToDie() {
+        return timeToDie;
+    }
+
+    public void setTimeToDie(int timeToDie) {
+        this.timeToDie = timeToDie;
+    }
+
+    public boolean isAlive() {
+        return isAlive;
+    }
+
+    public void setAlive(boolean alive) {
+        isAlive = alive;
+    }
+
+    public void render(GraphicsContext gc) {
+        gc.drawImage(img, x, y);
+    }
+
     public abstract void update();
 }

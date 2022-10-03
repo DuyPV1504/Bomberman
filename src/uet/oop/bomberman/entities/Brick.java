@@ -2,6 +2,7 @@
 
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
+import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.graphics.Sprite;
 
 public class Brick extends Entity {
@@ -12,7 +13,14 @@ public class Brick extends Entity {
 
     @Override
     public void update() {
-
+        if (!isAlive) {
+            if (timeToDie > 0) {
+                this.setImg(Sprite.movingSprite(Sprite.brick_exploded2,
+                        Sprite.brick_exploded1, Sprite.brick_exploded, timeToDie, 60).getFxImage());
+                timeToDie--;
+                BombermanGame.map[yUnit][xUnit] = "+";
+            }
+        }
     }
 
 }

@@ -38,6 +38,7 @@ public class Oneal extends Entity {
      * 4 direction for moving.
      */
     private void moveLeft(int nextX) {
+
         if (x > nextX) {
             x -= 1;
 
@@ -54,6 +55,10 @@ public class Oneal extends Entity {
 
             //Xác định enemy đang ở trong block
             isInsideBlock = true;
+
+            //Update map
+            BombermanGame.map[yUnit][xUnit] = "2";
+            BombermanGame.map[yUnit][xUnit + 1] = "+";
         }
 
 
@@ -76,6 +81,10 @@ public class Oneal extends Entity {
 
             //Xác định enemy đang ở trong block
             isInsideBlock = true;
+
+            //Update map
+            BombermanGame.map[yUnit][xUnit] = "2";
+            BombermanGame.map[yUnit][xUnit - 1] = "+";
         }
     }
 
@@ -96,6 +105,10 @@ public class Oneal extends Entity {
 
             //Xác định enemy đang ở trong block
             isInsideBlock = true;
+
+            //Update map
+            BombermanGame.map[yUnit][xUnit] = "2";
+            BombermanGame.map[yUnit + 1][xUnit] = "+";
         }
     }
 
@@ -117,6 +130,10 @@ public class Oneal extends Entity {
 
             //Xác định enemy đang ở trong block
             isInsideBlock = true;
+
+            //Update map
+            BombermanGame.map[yUnit][xUnit] = "2";
+            BombermanGame.map[yUnit - 1][xUnit] = "+";
         }
     }
 
@@ -190,61 +207,75 @@ public class Oneal extends Entity {
 
     @Override
     public void update() {
+        if (isAlive) {
 
-        //Tái hiện lại map
-        createMap();
-
-        //Tọa độ của player
-        int PlayerX = BombermanGame.entities.get(0).getxUnit();
-        int PlayerY = BombermanGame.entities.get(0).getyUnit();
-
-        //Di chuyển
-        if (road.size() > 0) {
-
-            //Khôi phục lại map
+            //Tái hiện lại map
             createMap();
 
-            Pair<Integer, Integer> next = road.get(road.size() - 1);
+            //Tọa độ của player
+            int PlayerX = BombermanGame.entities.get(0).getxUnit();
+            int PlayerY = BombermanGame.entities.get(0).getyUnit();
 
-            if (next.getKey() > xUnit) {
+            //Di chuyển
+            if (road.size() > 0) {
 
-                moveRight(next.getKey() * Sprite.SCALED_SIZE);
-            } else if (next.getKey() < xUnit) {
+                //Khôi phục lại map
+                createMap();
 
-                moveLeft(next.getKey() * Sprite.SCALED_SIZE);
-            } else if (next.getValue() > yUnit) {
+                Pair<Integer, Integer> next = road.get(road.size() - 1);
 
-                moveDown(next.getValue() * Sprite.SCALED_SIZE);
-            } else if (next.getValue() < yUnit) {
+                if (next.getKey() > xUnit) {
 
-                moveUp(next.getValue() * Sprite.SCALED_SIZE);
+                    moveRight(next.getKey() * Sprite.SCALED_SIZE);
+                    this.setImg(Sprite.movingSprite(Sprite.oneal_right1, Sprite.oneal_right2, Sprite.oneal_right3, animate, 60).getFxImage());
+                } else if (next.getKey() < xUnit) {
+
+                    moveLeft(next.getKey() * Sprite.SCALED_SIZE);
+                    this.setImg(Sprite.movingSprite(Sprite.oneal_left1, Sprite.oneal_left2, Sprite.oneal_left3, animate, 60).getFxImage());
+                } else if (next.getValue() > yUnit) {
+
+                    moveDown(next.getValue() * Sprite.SCALED_SIZE);
+                    this.setImg(Sprite.movingSprite(Sprite.oneal_left1, Sprite.oneal_left2, Sprite.oneal_left3, animate, 60).getFxImage());
+                } else if (next.getValue() < yUnit) {
+
+                    moveUp(next.getValue() * Sprite.SCALED_SIZE);
+                    this.setImg(Sprite.movingSprite(Sprite.oneal_right1, Sprite.oneal_right2, Sprite.oneal_right3, animate, 60).getFxImage());
+                }
+
             }
 
-            this.setImg(Sprite.movingSprite(Sprite.balloom_right1, Sprite.balloom_right2, Sprite.balloom_right3, animate, 60).getFxImage());
-        }
 
+            //Nếu player chưa di chuyển thì không cần tìm đường đi
+            if (PlayerX != oldPlayerX || PlayerY != oldPlayerY) {
 
-        //Nếu player chưa di chuyển thì không cần tìm đường đi
-        if (PlayerX != oldPlayerX || PlayerY != oldPlayerY) {
+                //Chỉ tìm khi ở trong block
+                if (isInsideBlock) {
 
-            //Chỉ tìm khi ở trong block
-            if (isInsideBlock) {
+                    //Tìm đường đi
+                    road.clear(); //Xóa đường đi cũ
 
-                //Tìm đường đi
-                road.clear(); //Xóa đường đi cũ
+                    if (findRoad(xUnit, yUnit, PlayerX, PlayerY, map)) {
 
-                if (findRoad(xUnit, yUnit, PlayerX, PlayerY, map)) {
-
-                    //Cập nhật lại tọa độ của player
-                    oldPlayerX = PlayerX;
-                    oldPlayerY = PlayerY;
+                        //Cập nhật lại tọa độ của player
+                        oldPlayerX = PlayerX;
+                        oldPlayerY = PlayerY;
+                    }
                 }
             }
+
+            //Update collsion box và animation
+            collisionUpdate();
+            animate++;
+        } else {
+            if (timeToDie > 0) {
+                timeToDie--;
+                this.setImg(Sprite.movingSprite(Sprite.oneal_dead, Sprite.nothing, Sprite.nothing, Sprite.oneal_dead, timeToDie, 60).getFxImage());
+                BombermanGame.map[yUnit][xUnit] = "+";
+            } else {
+                this.setImg(null);
+            }
         }
 
-        //Update collsion box và animation
-        collisionUpdate();
-        animate++;
     }
 
 }

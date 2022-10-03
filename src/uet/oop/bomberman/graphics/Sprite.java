@@ -17,6 +17,8 @@ public class Sprite {
 	protected int _realHeight;
 	private SpriteSheet _sheet;
 
+
+	public static Sprite nothing = new Sprite(DEFAULT_SIZE, 4, 1, SpriteSheet.tiles, 16, 16);
 	/*
 	|--------------------------------------------------------------------------
 	| Board sprites
@@ -226,6 +228,25 @@ public class Sprite {
 		}
 			
 		return x2;
+	}
+
+	public static Sprite movingSprite(Sprite normal, Sprite x1, Sprite x2, Sprite x3, int animate, int time) {
+		int calc = animate % time;
+		int diff = time / 4;
+
+		if(calc < diff) {
+			return normal;
+		}
+
+		if(calc < diff * 2) {
+			return x1;
+		}
+
+		if(calc < diff * 3) {
+			return x2;
+		}
+
+		return x3;
 	}
 	
 	public static Sprite movingSprite(Sprite x1, Sprite x2, int animate, int time) {
