@@ -1,16 +1,17 @@
- package uet.oop.bomberman.entities;
+package uet.oop.bomberman.enemy;
 
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Pair;
 import uet.oop.bomberman.BombermanGame;
+import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Oneal extends Entity {
+public abstract class Enemies extends Entity {
 
     private List<Pair<Integer, Integer>> road = new ArrayList<>();
     private String[][] map = new String[BombermanGame.HEIGHT][BombermanGame.WIDTH];
@@ -18,12 +19,26 @@ public class Oneal extends Entity {
     private int oldPlayerY;
     private int animate = 0;
     private boolean isInsideBlock = true;
+    private int speed = 1;
 
-    public Oneal(int x, int y, Image img) {
+    //Sprite
+    protected Sprite left1;
+    protected Sprite left2;
+    protected Sprite left3;
+    protected Sprite right1;
+    protected Sprite right2;
+    protected Sprite right3;
+    protected Sprite dead1;
+    protected Sprite dead2;
+    protected Sprite dead3;
+    protected Sprite dead4;
+
+    public Enemies(int x, int y, Image img) {
         super(x, y, img);
         this.collisionBox = new Rectangle(x, y, Sprite.SCALED_SIZE, Sprite.SCALED_SIZE);
         this.oldPlayerX = this.xUnit;
         this.oldPlayerY = this.yUnit;
+
     }
 
     /**
@@ -40,7 +55,7 @@ public class Oneal extends Entity {
     private void moveLeft(int nextX) {
 
         if (x > nextX) {
-            x -= 1;
+            x -= speed;
 
             //Xác định enemy đang không ở trong block
             isInsideBlock = false;
@@ -66,7 +81,7 @@ public class Oneal extends Entity {
 
     private void moveRight(int nextX) {
         if (x < nextX) {
-            x += 1;
+            x += speed;
 
             //Xác định enemy đang không ở trong block
             isInsideBlock = false;
@@ -90,7 +105,7 @@ public class Oneal extends Entity {
 
     private void moveUp(int nextY) {
         if (y > nextY) {
-            y -= 1;
+            y -= speed;
 
             //Xác định enemy đang không ở trong block
             isInsideBlock = false;
@@ -115,7 +130,7 @@ public class Oneal extends Entity {
     private void moveDown(int nextY) {
 
         if (y < nextY) {
-            y += 1;
+            y += speed;
 
             //Xác định enemy đang không ở trong block
             isInsideBlock = false;
@@ -227,19 +242,19 @@ public class Oneal extends Entity {
                 if (next.getKey() > xUnit) {
 
                     moveRight(next.getKey() * Sprite.SCALED_SIZE);
-                    this.setImg(Sprite.movingSprite(Sprite.oneal_right1, Sprite.oneal_right2, Sprite.oneal_right3, animate, 60).getFxImage());
+                    this.setImg(Sprite.movingSprite(right1, right2, right3, animate, 60).getFxImage());
                 } else if (next.getKey() < xUnit) {
 
                     moveLeft(next.getKey() * Sprite.SCALED_SIZE);
-                    this.setImg(Sprite.movingSprite(Sprite.oneal_left1, Sprite.oneal_left2, Sprite.oneal_left3, animate, 60).getFxImage());
+                    this.setImg(Sprite.movingSprite(left1, left2, left3, animate, 60).getFxImage());
                 } else if (next.getValue() > yUnit) {
 
                     moveDown(next.getValue() * Sprite.SCALED_SIZE);
-                    this.setImg(Sprite.movingSprite(Sprite.oneal_left1, Sprite.oneal_left2, Sprite.oneal_left3, animate, 60).getFxImage());
+                    this.setImg(Sprite.movingSprite(left1, left2, left3, animate, 60).getFxImage());
                 } else if (next.getValue() < yUnit) {
 
                     moveUp(next.getValue() * Sprite.SCALED_SIZE);
-                    this.setImg(Sprite.movingSprite(Sprite.oneal_right1, Sprite.oneal_right2, Sprite.oneal_right3, animate, 60).getFxImage());
+                    this.setImg(Sprite.movingSprite(right1, right2, right3, animate, 60).getFxImage());
                 }
 
             }
@@ -269,7 +284,7 @@ public class Oneal extends Entity {
         } else {
             if (timeToDie > 0) {
                 timeToDie--;
-                this.setImg(Sprite.movingSprite(Sprite.oneal_dead, Sprite.nothing, Sprite.nothing, Sprite.oneal_dead, timeToDie, 60).getFxImage());
+                this.setImg(Sprite.movingSprite(dead4, dead3, dead2, dead1, timeToDie, 60).getFxImage());
                 BombermanGame.map[yUnit][xUnit] = "+";
             } else {
                 this.setImg(null);
@@ -278,5 +293,6 @@ public class Oneal extends Entity {
 
     }
 
-}
+    protected abstract void setSprite();
 
+}

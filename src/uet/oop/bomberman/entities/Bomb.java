@@ -10,7 +10,18 @@ public class Bomb extends Entity {
     private int timeAfterExplode = 50;
     private boolean exploded = false;
     private boolean allowToPassThru = true;
-    private int radius = 1;
+    private int radius = 3;
+    private boolean hasKilledBrick = false;
+
+    //Brick block explosion
+    private boolean brickonLeft = false;
+    private boolean brickonRight = false;
+    private boolean brickonUp = false;
+    private boolean brickonDown = false;
+    private boolean brickonLeft1 = false;
+    private boolean brickonRight1 = false;
+    private boolean brickonUp1 = false;
+    private boolean brickonDown1 = false;
 
     public Bomb(int yUnit, int xUnit, Image img) {
         super(yUnit, xUnit, img);
@@ -41,38 +52,117 @@ public class Bomb extends Entity {
     }
 
     private void kill() {
-        for (Entity entity : BombermanGame.entities) {
+        if (!hasKilledBrick) {
+            outerLoop:
             for (int i = 0; i <= radius; i++) {
-
-                if (entity.getxUnit() <= this.getxUnit() + i && entity.getxUnit() >= this.getxUnit() - i
-                        && entity.getyUnit() == this.getyUnit()) {
-                    entity.setAlive(false);
-                }
-
-                if (entity.getyUnit() <= this.getyUnit() + i && entity.getyUnit() >= this.getyUnit() - i
-                        && entity.getxUnit() == this.getxUnit()) {
-                    entity.setAlive(false);
-                }
-
-            }
-        }
-
-        for (Entity entity : BombermanGame.stillObjects) {
-            for (int i = 0; i <= radius; i++) {
-                if (entity instanceof Brick) {
-
-                    if (entity.getxUnit() <= this.getxUnit() + i && entity.getxUnit() >= this.getxUnit() - i
+                for (Entity entity : BombermanGame.entities) {
+                    if (entity.getxUnit() <= this.getxUnit() + i && entity.getxUnit() > this.getxUnit()
                             && entity.getyUnit() == this.getyUnit()) {
                         entity.setAlive(false);
                     }
+                }
 
-                    if (entity.getyUnit() <= this.getyUnit() + i && entity.getyUnit() >= this.getyUnit() - i
+                for (Entity entity : BombermanGame.stillObjects) {
+                    if (entity instanceof Brick) {
+                        if (entity.getxUnit() <= this.getxUnit() + i && entity.getxUnit() > this.getxUnit()
+                                && entity.getyUnit() == this.getyUnit()) {
+                            if (i == 1) {
+                                brickonRight = true;
+                            }
+                            if (i == 2) {
+                                brickonRight1 = true;
+                            }
+
+                            entity.setAlive(false);
+                            break outerLoop;
+                        }
+                    }
+                }
+            }
+
+            outerLoop:
+            for (int i = 0; i <= radius; i++) {
+                for (Entity entity : BombermanGame.entities) {
+                    if (entity.getxUnit() >= this.getxUnit() - i && entity.getxUnit() < this.getxUnit()
+                            && entity.getyUnit() == this.getyUnit()) {
+
+                        entity.setAlive(false);
+                    }
+                }
+
+                for (Entity entity : BombermanGame.stillObjects) {
+                    if (entity instanceof Brick) {
+                        if (entity.getxUnit() >= this.getxUnit() - i && entity.getxUnit() < this.getxUnit()
+                                && entity.getyUnit() == this.getyUnit()) {
+                            if (i == 1) {
+                                brickonLeft = true;
+                            }
+                            if (i == 2) {
+                                brickonLeft1 = true;
+                            }
+
+
+                            entity.setAlive(false);
+                            break outerLoop;
+                        }
+                    }
+                }
+            }
+
+            outerLoop:
+            for (int i = 0; i <= radius; i++) {
+                for (Entity entity : BombermanGame.entities) {
+                    if (entity.getyUnit() <= this.getyUnit() + i && entity.getyUnit() >= this.getyUnit()
                             && entity.getxUnit() == this.getxUnit()) {
                         entity.setAlive(false);
                     }
+                }
 
+                for (Entity entity : BombermanGame.stillObjects) {
+                    if (entity instanceof Brick) {
+                        if (entity.getyUnit() <= this.getyUnit() + i && entity.getyUnit() >= this.getyUnit()
+                                && entity.getxUnit() == this.getxUnit()) {
+                            if (i == 1) {
+                                brickonDown = true;
+                            }
+                            if (i == 2) {
+                                brickonDown1 = true;
+                            }
+
+                            entity.setAlive(false);
+                            break outerLoop;
+                        }
+                    }
                 }
             }
+
+            outerLoop:
+            for (int i = 0; i <= radius; i++) {
+                for (Entity entity : BombermanGame.entities) {
+                    if (entity.getyUnit() >= this.getyUnit() - i && entity.getyUnit() < this.getyUnit()
+                            && entity.getxUnit() == this.getxUnit()) {
+                        entity.setAlive(false);
+                    }
+                }
+
+                for (Entity entity : BombermanGame.stillObjects) {
+                    if (entity instanceof Brick) {
+                        if (entity.getyUnit() >= this.getyUnit() - i && entity.getyUnit() < this.getyUnit()
+                                && entity.getxUnit() == this.getxUnit()) {
+                            if (i == 1) {
+                                brickonUp = true;
+                            }
+                            if (i == 2) {
+                                brickonUp1 = true;
+                            }
+
+                            entity.setAlive(false);
+                            break outerLoop;
+                        }
+                    }
+                }
+            }
+            hasKilledBrick = true;
         }
     }
 
@@ -94,6 +184,7 @@ public class Bomb extends Entity {
                 kill();
             } else {
                 exploded = true;
+                timeToDie = 0;
             }
         }
     }
@@ -126,33 +217,33 @@ public class Bomb extends Entity {
                 if (!exploded) {
                     gc.drawImage(Sprite.bomb_exploded1.getFxImage(), x, y);
                 }
-                if (!BombermanGame.map[yUnit][xUnit - 1].equals("#")
-                        && !BombermanGame.map[yUnit][xUnit - 2].equals("#") && !exploded) {
-                    gc.drawImage(Sprite.explosion_horizontal_left_last1.getFxImage(), x - Sprite.SCALED_SIZE * 2, y);
-                }
-                if (!BombermanGame.map[yUnit][xUnit + 1].equals("#") &&
-                        !BombermanGame.map[yUnit][xUnit + 2].equals("#") && !exploded) {
-                    gc.drawImage(Sprite.explosion_horizontal_right_last1.getFxImage(), x + Sprite.SCALED_SIZE * 2, y);
-                }
-                if (!BombermanGame.map[yUnit - 1][xUnit].equals("#")
-                        && !BombermanGame.map[yUnit - 2][xUnit].equals("#") && !exploded) {
-                    gc.drawImage(Sprite.explosion_vertical_top_last1.getFxImage(), x, y - Sprite.SCALED_SIZE * 2);
-                }
-                if (!BombermanGame.map[yUnit + 1][xUnit].equals("#") &&
-                        !BombermanGame.map[yUnit + 2][xUnit].equals("#") && !exploded) {
-                    gc.drawImage(Sprite.explosion_vertical_down_last1.getFxImage(), x, y + Sprite.SCALED_SIZE * 2);
-                }
-                if (!BombermanGame.map[yUnit][xUnit - 1].equals("#") && !exploded) {
+
+                if(!BombermanGame.map[yUnit][xUnit - 1].equals("#") && !exploded) {
                     gc.drawImage(Sprite.explosion_horizontal1.getFxImage(), x - Sprite.SCALED_SIZE, y);
+                    if(!BombermanGame.map[yUnit][xUnit - 2].equals("#") && !exploded && !brickonLeft) {
+                        gc.drawImage(Sprite.explosion_horizontal_left_last1.getFxImage(), x - Sprite.SCALED_SIZE * 2, y);
+                    }
                 }
-                if (!BombermanGame.map[yUnit][xUnit + 1].equals("#") && !exploded) {
+
+                if(!BombermanGame.map[yUnit][xUnit + 1].equals("#") && !exploded) {
                     gc.drawImage(Sprite.explosion_horizontal1.getFxImage(), x + Sprite.SCALED_SIZE, y);
+                    if(!BombermanGame.map[yUnit][xUnit + 2].equals("#") && !exploded && !brickonRight) {
+                        gc.drawImage(Sprite.explosion_horizontal_right_last1.getFxImage(), x + Sprite.SCALED_SIZE * 2, y);
+                    }
                 }
-                if (!BombermanGame.map[yUnit - 1][xUnit].equals("#") && !exploded) {
+
+                if(!BombermanGame.map[yUnit - 1][xUnit].equals("#") && !exploded) {
                     gc.drawImage(Sprite.explosion_vertical1.getFxImage(), x, y - Sprite.SCALED_SIZE);
+                    if(!BombermanGame.map[yUnit - 2][xUnit].equals("#") && !exploded && !brickonUp) {
+                        gc.drawImage(Sprite.explosion_vertical_top_last1.getFxImage(), x, y - Sprite.SCALED_SIZE * 2);
+                    }
                 }
-                if (!BombermanGame.map[yUnit + 1][xUnit].equals("#") && !exploded) {
+
+                if(!BombermanGame.map[yUnit + 1][xUnit].equals("#") && !exploded) {
                     gc.drawImage(Sprite.explosion_vertical1.getFxImage(), x, y + Sprite.SCALED_SIZE);
+                    if(!BombermanGame.map[yUnit + 2][xUnit].equals("#") && !exploded && !brickonDown) {
+                        gc.drawImage(Sprite.explosion_vertical_down_last1.getFxImage(), x, y + Sprite.SCALED_SIZE * 2);
+                    }
                 }
 
             } else if (radius == 3) {
@@ -161,36 +252,36 @@ public class Bomb extends Entity {
                 }
                 if (!BombermanGame.map[yUnit][xUnit - 1].equals("#") && !exploded) {
                     gc.drawImage(Sprite.explosion_horizontal2.getFxImage(), x - Sprite.SCALED_SIZE, y);
-                    if (!BombermanGame.map[yUnit][xUnit - 2].equals("#") && !exploded) {
+                    if (!BombermanGame.map[yUnit][xUnit - 2].equals("#") && !exploded && !brickonLeft) {
                         gc.drawImage(Sprite.explosion_horizontal2.getFxImage(), x - Sprite.SCALED_SIZE * 2, y);
-                        if (!BombermanGame.map[yUnit][xUnit - 3].equals("#") && !exploded) {
+                        if (!BombermanGame.map[yUnit][xUnit - 3].equals("#") && !exploded && !brickonLeft1) {
                             gc.drawImage(Sprite.explosion_horizontal_left_last2.getFxImage(), x - Sprite.SCALED_SIZE * 3, y);
                         }
                     }
                 }
                 if (!BombermanGame.map[yUnit][xUnit + 1].equals("#") && !exploded) {
                     gc.drawImage(Sprite.explosion_horizontal2.getFxImage(), x + Sprite.SCALED_SIZE, y);
-                    if (!BombermanGame.map[yUnit][xUnit + 2].equals("#") && !exploded) {
+                    if (!BombermanGame.map[yUnit][xUnit + 2].equals("#") && !exploded && !brickonRight) {
                         gc.drawImage(Sprite.explosion_horizontal2.getFxImage(), x + Sprite.SCALED_SIZE * 2, y);
-                        if (!BombermanGame.map[yUnit][xUnit + 3].equals("#") && !exploded) {
+                        if (!BombermanGame.map[yUnit][xUnit + 3].equals("#") && !exploded && !brickonRight1) {
                             gc.drawImage(Sprite.explosion_horizontal_right_last2.getFxImage(), x + Sprite.SCALED_SIZE * 3, y);
                         }
                     }
                 }
                 if (!BombermanGame.map[yUnit - 1][xUnit].equals("#") && !exploded) {
                     gc.drawImage(Sprite.explosion_vertical2.getFxImage(), x, y - Sprite.SCALED_SIZE);
-                    if (!BombermanGame.map[yUnit - 2][xUnit].equals("#") && !exploded) {
+                    if (!BombermanGame.map[yUnit - 2][xUnit].equals("#") && !exploded && !brickonUp) {
                         gc.drawImage(Sprite.explosion_vertical2.getFxImage(), x, y - Sprite.SCALED_SIZE * 2);
-                        if (!BombermanGame.map[yUnit - 3][xUnit].equals("#") && !exploded) {
+                        if (!BombermanGame.map[yUnit - 3][xUnit].equals("#") && !exploded && !brickonUp1) {
                             gc.drawImage(Sprite.explosion_vertical_top_last2.getFxImage(), x, y - Sprite.SCALED_SIZE * 3);
                         }
                     }
                 }
                 if (!BombermanGame.map[yUnit + 1][xUnit].equals("#") && !exploded) {
                     gc.drawImage(Sprite.explosion_vertical2.getFxImage(), x, y + Sprite.SCALED_SIZE);
-                    if (!BombermanGame.map[yUnit + 2][xUnit].equals("#") && !exploded) {
+                    if (!BombermanGame.map[yUnit + 2][xUnit].equals("#") && !exploded && !brickonDown) {
                         gc.drawImage(Sprite.explosion_vertical2.getFxImage(), x, y + Sprite.SCALED_SIZE * 2);
-                        if (!BombermanGame.map[yUnit + 3][xUnit].equals("#") && !exploded) {
+                        if (!BombermanGame.map[yUnit + 3][xUnit].equals("#") && !exploded && !brickonDown1) {
                             gc.drawImage(Sprite.explosion_vertical_down_last2.getFxImage(), x, y + Sprite.SCALED_SIZE * 3);
                         }
                     }

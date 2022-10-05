@@ -1,24 +1,21 @@
 package uet.oop.bomberman;
 
 //import com.sun.deploy.security.JarSignature;
-import com.sun.prism.MultiTexture;
-import com.sun.prism.PresentableState;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import uet.oop.bomberman.enemy.Balloon;
+import uet.oop.bomberman.enemy.Oneal;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -159,7 +156,7 @@ public class BombermanGame extends Application {
         }
 
         //Bomb init
-        Entity bomb = new Bomb(1, 15, Sprite.bomb.getFxImage());
+        Entity bomb = new Bomb(5, 21, Sprite.bomb.getFxImage());
         stillObjects.add(bomb);
 
         myReader.close();
@@ -175,7 +172,6 @@ public class BombermanGame extends Application {
             entity.update();
         });
         stillObjects.removeIf(entity -> entity.getTimeToDie() == 0);
-
 
     }
 
