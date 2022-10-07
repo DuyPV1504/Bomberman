@@ -3,10 +3,14 @@ package uet.oop.bomberman;
 //import com.sun.deploy.security.JarSignature;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import uet.oop.bomberman.enemy.Balloon;
 import uet.oop.bomberman.enemy.Oneal;
@@ -30,6 +34,8 @@ public class BombermanGame extends Application {
 
     private GraphicsContext gc;
     private Canvas canvas;
+    @FXML
+    Button startButton;
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
@@ -37,6 +43,13 @@ public class BombermanGame extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("Menu.fxml"));
+        stage.setTitle("Hello World");
+        stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
+        stage.show();
+    }
+
+    public void startGame() throws Exception {
         // Tao Canvas
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
@@ -61,13 +74,13 @@ public class BombermanGame extends Application {
         };
 
         // Them scene vao stage
+        Stage stage = (Stage) startButton.getScene().getWindow();
         stage.setScene(scene);
         stage.show();
 
         timer.start();
 
         createMap();
-
     }
 
     public void createMap() throws IOException {
