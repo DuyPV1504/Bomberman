@@ -10,7 +10,7 @@ public class Bomb extends Entity {
     private int timeAfterExplode = 50;
     private boolean exploded = false;
     private boolean allowToPassThru = true;
-    private int radius = 3;
+    private int radius = 1;
     private boolean hasKilledBrick = false;
 
     //Brick block explosion
@@ -198,91 +198,284 @@ public class Bomb extends Entity {
             //Draw explosion
             if (radius == 1) {
                 if (!exploded) {
-                    gc.drawImage(Sprite.bomb_exploded.getFxImage(), x, y);
+
+                    gc.drawImage(Sprite.movingSprite(
+                            Sprite.bomb_exploded,
+                            Sprite.bomb_exploded1,
+                            Sprite.bomb_exploded2,
+                            Sprite.bomb_exploded1,
+                            Sprite.bomb_exploded,
+                            timeAfterExplode, 60).getFxImage(), x, y);
+
                 }
                 if (!BombermanGame.map[yUnit][xUnit - 1].equals("#") && !exploded) {
-                    gc.drawImage(Sprite.explosion_horizontal_left_last.getFxImage(), x - Sprite.SCALED_SIZE, y);
+
+                    gc.drawImage(Sprite.movingSprite(
+                            Sprite.explosion_horizontal_left_last,
+                            Sprite.explosion_horizontal_left_last1,
+                            Sprite.explosion_horizontal_left_last2,
+                            Sprite.explosion_horizontal_left_last1,
+                            Sprite.explosion_horizontal_left_last,
+                            timeAfterExplode, 60).getFxImage(), x - Sprite.SCALED_SIZE, y);
+
                 }
                 if (!BombermanGame.map[yUnit][xUnit + 1].equals("#") && !exploded) {
-                    gc.drawImage(Sprite.explosion_horizontal_right_last.getFxImage(), x + Sprite.SCALED_SIZE, y);
+
+                    gc.drawImage(Sprite.movingSprite(
+                            Sprite.explosion_horizontal_right_last,
+                            Sprite.explosion_horizontal_right_last1,
+                            Sprite.explosion_horizontal_right_last2,
+                            Sprite.explosion_horizontal_right_last1,
+                            Sprite.explosion_horizontal_right_last,
+                            timeAfterExplode, 60).getFxImage(), x + Sprite.SCALED_SIZE, y);
+
                 }
                 if (!BombermanGame.map[yUnit - 1][xUnit].equals("#") && !exploded) {
-                    gc.drawImage(Sprite.explosion_vertical_top_last.getFxImage(), x, y - Sprite.SCALED_SIZE);
+
+                    gc.drawImage(Sprite.movingSprite(
+                            Sprite.explosion_vertical_top_last,
+                            Sprite.explosion_vertical_top_last1,
+                            Sprite.explosion_vertical_top_last2,
+                            Sprite.explosion_vertical_top_last1,
+                            Sprite.explosion_vertical_top_last,
+                            timeAfterExplode, 60).getFxImage(), x, y - Sprite.SCALED_SIZE);
+
                 }
                 if (!BombermanGame.map[yUnit + 1][xUnit].equals("#") && !exploded) {
-                    gc.drawImage(Sprite.explosion_vertical_down_last.getFxImage(), x, y + Sprite.SCALED_SIZE);
+
+                    gc.drawImage(Sprite.movingSprite(
+                            Sprite.explosion_vertical_down_last,
+                            Sprite.explosion_vertical_down_last1,
+                            Sprite.explosion_vertical_down_last2,
+                            Sprite.explosion_vertical_down_last1,
+                            Sprite.explosion_vertical_down_last,
+                            timeAfterExplode, 60).getFxImage(), x, y + Sprite.SCALED_SIZE);
+
                 }
 
             } else if (radius == 2) {
                 if (!exploded) {
-                    gc.drawImage(Sprite.bomb_exploded1.getFxImage(), x, y);
+                    gc.drawImage(Sprite.movingSprite(
+                            Sprite.bomb_exploded,
+                            Sprite.bomb_exploded1,
+                            Sprite.bomb_exploded2,
+                            Sprite.bomb_exploded1,
+                            Sprite.bomb_exploded,
+                            timeAfterExplode, 60).getFxImage(), x, y);
                 }
 
                 if(!BombermanGame.map[yUnit][xUnit - 1].equals("#") && !exploded) {
-                    gc.drawImage(Sprite.explosion_horizontal1.getFxImage(), x - Sprite.SCALED_SIZE, y);
+                    gc.drawImage(Sprite.movingSprite(
+                            Sprite.explosion_horizontal,
+                            Sprite.explosion_horizontal1,
+                            Sprite.explosion_horizontal2,
+                            Sprite.explosion_horizontal1,
+                            Sprite.explosion_horizontal,
+                            timeAfterExplode, 60).getFxImage(), x - Sprite.SCALED_SIZE, y);
+
                     if(!BombermanGame.map[yUnit][xUnit - 2].equals("#") && !exploded && !brickonLeft) {
-                        gc.drawImage(Sprite.explosion_horizontal_left_last1.getFxImage(), x - Sprite.SCALED_SIZE * 2, y);
+                        gc.drawImage(Sprite.movingSprite(
+                                Sprite.explosion_horizontal_left_last,
+                                Sprite.explosion_horizontal_left_last1,
+                                Sprite.explosion_horizontal_left_last2,
+                                Sprite.explosion_horizontal_left_last1,
+                                Sprite.explosion_horizontal_left_last,
+                                timeAfterExplode, 60).getFxImage(), x - Sprite.SCALED_SIZE * 2, y);
+
                     }
                 }
 
                 if(!BombermanGame.map[yUnit][xUnit + 1].equals("#") && !exploded) {
-                    gc.drawImage(Sprite.explosion_horizontal1.getFxImage(), x + Sprite.SCALED_SIZE, y);
+                    gc.drawImage(Sprite.movingSprite(
+                            Sprite.explosion_horizontal,
+                            Sprite.explosion_horizontal1,
+                            Sprite.explosion_horizontal2,
+                            Sprite.explosion_horizontal1,
+                            Sprite.explosion_horizontal,
+                            timeAfterExplode, 60).getFxImage(), x + Sprite.SCALED_SIZE, y);
+
                     if(!BombermanGame.map[yUnit][xUnit + 2].equals("#") && !exploded && !brickonRight) {
-                        gc.drawImage(Sprite.explosion_horizontal_right_last1.getFxImage(), x + Sprite.SCALED_SIZE * 2, y);
+                        gc.drawImage(Sprite.movingSprite(
+                                Sprite.explosion_horizontal_right_last,
+                                Sprite.explosion_horizontal_right_last1,
+                                Sprite.explosion_horizontal_right_last2,
+                                Sprite.explosion_horizontal_right_last1,
+                                Sprite.explosion_horizontal_right_last,
+                                timeAfterExplode, 60).getFxImage(), x + Sprite.SCALED_SIZE * 2, y);
+
                     }
                 }
 
                 if(!BombermanGame.map[yUnit - 1][xUnit].equals("#") && !exploded) {
-                    gc.drawImage(Sprite.explosion_vertical1.getFxImage(), x, y - Sprite.SCALED_SIZE);
+                    gc.drawImage(Sprite.movingSprite(
+                            Sprite.explosion_vertical,
+                            Sprite.explosion_vertical1,
+                            Sprite.explosion_vertical2,
+                            Sprite.explosion_vertical1,
+                            Sprite.explosion_vertical,
+                            timeAfterExplode, 60).getFxImage(), x, y - Sprite.SCALED_SIZE);
+
                     if(!BombermanGame.map[yUnit - 2][xUnit].equals("#") && !exploded && !brickonUp) {
-                        gc.drawImage(Sprite.explosion_vertical_top_last1.getFxImage(), x, y - Sprite.SCALED_SIZE * 2);
+                        gc.drawImage(Sprite.movingSprite(
+                                Sprite.explosion_vertical_top_last,
+                                Sprite.explosion_vertical_top_last1,
+                                Sprite.explosion_vertical_top_last2,
+                                Sprite.explosion_vertical_top_last1,
+                                Sprite.explosion_vertical_top_last,
+                                timeAfterExplode, 60).getFxImage(), x, y - Sprite.SCALED_SIZE * 2);
+
                     }
                 }
 
                 if(!BombermanGame.map[yUnit + 1][xUnit].equals("#") && !exploded) {
-                    gc.drawImage(Sprite.explosion_vertical1.getFxImage(), x, y + Sprite.SCALED_SIZE);
+                    gc.drawImage(Sprite.movingSprite(
+                            Sprite.explosion_vertical,
+                            Sprite.explosion_vertical1,
+                            Sprite.explosion_vertical2,
+                            Sprite.explosion_vertical1,
+                            Sprite.explosion_vertical,
+                            timeAfterExplode, 60).getFxImage(), x, y + Sprite.SCALED_SIZE);
+
                     if(!BombermanGame.map[yUnit + 2][xUnit].equals("#") && !exploded && !brickonDown) {
-                        gc.drawImage(Sprite.explosion_vertical_down_last1.getFxImage(), x, y + Sprite.SCALED_SIZE * 2);
+                        gc.drawImage(Sprite.movingSprite(
+                                Sprite.explosion_vertical_down_last,
+                                Sprite.explosion_vertical_down_last1,
+                                Sprite.explosion_vertical_down_last2,
+                                Sprite.explosion_vertical_down_last1,
+                                Sprite.explosion_vertical_down_last,
+                                timeAfterExplode, 60).getFxImage(), x, y + Sprite.SCALED_SIZE * 2);
+
                     }
                 }
 
             } else if (radius == 3) {
                 if (!exploded) {
-                    gc.drawImage(Sprite.bomb_exploded2.getFxImage(), x, y);
+                    gc.drawImage(Sprite.movingSprite(
+                            Sprite.bomb_exploded,
+                            Sprite.bomb_exploded1,
+                            Sprite.bomb_exploded2,
+                            Sprite.bomb_exploded1,
+                            Sprite.bomb_exploded,
+                            timeAfterExplode, 60).getFxImage(), x, y);
+
                 }
                 if (!BombermanGame.map[yUnit][xUnit - 1].equals("#") && !exploded) {
-                    gc.drawImage(Sprite.explosion_horizontal2.getFxImage(), x - Sprite.SCALED_SIZE, y);
+                    gc.drawImage(Sprite.movingSprite(
+                            Sprite.explosion_horizontal,
+                            Sprite.explosion_horizontal1,
+                            Sprite.explosion_horizontal2,
+                            Sprite.explosion_horizontal1,
+                            Sprite.explosion_horizontal,
+                            timeAfterExplode, 60).getFxImage(), x - Sprite.SCALED_SIZE, y);
+
                     if (!BombermanGame.map[yUnit][xUnit - 2].equals("#") && !exploded && !brickonLeft) {
-                        gc.drawImage(Sprite.explosion_horizontal2.getFxImage(), x - Sprite.SCALED_SIZE * 2, y);
+                        gc.drawImage(Sprite.movingSprite(
+                                Sprite.explosion_horizontal,
+                                Sprite.explosion_horizontal1,
+                                Sprite.explosion_horizontal2,
+                                Sprite.explosion_horizontal1,
+                                Sprite.explosion_horizontal,
+                                timeAfterExplode, 60).getFxImage(), x - Sprite.SCALED_SIZE * 2, y);
+
                         if (!BombermanGame.map[yUnit][xUnit - 3].equals("#") && !exploded && !brickonLeft1) {
-                            gc.drawImage(Sprite.explosion_horizontal_left_last2.getFxImage(), x - Sprite.SCALED_SIZE * 3, y);
+                            gc.drawImage(Sprite.movingSprite(
+                                    Sprite.explosion_horizontal_left_last,
+                                    Sprite.explosion_horizontal_left_last1,
+                                    Sprite.explosion_horizontal_left_last2,
+                                    Sprite.explosion_horizontal_left_last1,
+                                    Sprite.explosion_horizontal_left_last,
+                                    timeAfterExplode, 60).getFxImage(), x - Sprite.SCALED_SIZE * 3, y);
+
                         }
                     }
                 }
                 if (!BombermanGame.map[yUnit][xUnit + 1].equals("#") && !exploded) {
-                    gc.drawImage(Sprite.explosion_horizontal2.getFxImage(), x + Sprite.SCALED_SIZE, y);
+                    gc.drawImage(Sprite.movingSprite(
+                            Sprite.explosion_horizontal,
+                            Sprite.explosion_horizontal1,
+                            Sprite.explosion_horizontal2,
+                            Sprite.explosion_horizontal1,
+                            Sprite.explosion_horizontal,
+                            timeAfterExplode, 60).getFxImage(), x + Sprite.SCALED_SIZE, y);
+
                     if (!BombermanGame.map[yUnit][xUnit + 2].equals("#") && !exploded && !brickonRight) {
-                        gc.drawImage(Sprite.explosion_horizontal2.getFxImage(), x + Sprite.SCALED_SIZE * 2, y);
+                        gc.drawImage(Sprite.movingSprite(
+                                Sprite.explosion_horizontal,
+                                Sprite.explosion_horizontal1,
+                                Sprite.explosion_horizontal2,
+                                Sprite.explosion_horizontal1,
+                                Sprite.explosion_horizontal,
+                                timeAfterExplode, 60).getFxImage(), x + Sprite.SCALED_SIZE * 2, y);
+
                         if (!BombermanGame.map[yUnit][xUnit + 3].equals("#") && !exploded && !brickonRight1) {
-                            gc.drawImage(Sprite.explosion_horizontal_right_last2.getFxImage(), x + Sprite.SCALED_SIZE * 3, y);
+                            gc.drawImage(Sprite.movingSprite(
+                                    Sprite.explosion_horizontal_right_last,
+                                    Sprite.explosion_horizontal_right_last1,
+                                    Sprite.explosion_horizontal_right_last2,
+                                    Sprite.explosion_horizontal_right_last1,
+                                    Sprite.explosion_horizontal_right_last,
+                                    timeAfterExplode, 60).getFxImage(), x + Sprite.SCALED_SIZE * 3, y);
+
                         }
                     }
                 }
                 if (!BombermanGame.map[yUnit - 1][xUnit].equals("#") && !exploded) {
-                    gc.drawImage(Sprite.explosion_vertical2.getFxImage(), x, y - Sprite.SCALED_SIZE);
+                    gc.drawImage(Sprite.movingSprite(
+                            Sprite.explosion_vertical,
+                            Sprite.explosion_vertical1,
+                            Sprite.explosion_vertical2,
+                            Sprite.explosion_vertical1,
+                            Sprite.explosion_vertical,
+                            timeAfterExplode, 60).getFxImage(), x, y - Sprite.SCALED_SIZE);
+
                     if (!BombermanGame.map[yUnit - 2][xUnit].equals("#") && !exploded && !brickonUp) {
-                        gc.drawImage(Sprite.explosion_vertical2.getFxImage(), x, y - Sprite.SCALED_SIZE * 2);
+                        gc.drawImage(Sprite.movingSprite(
+                                Sprite.explosion_vertical,
+                                Sprite.explosion_vertical1,
+                                Sprite.explosion_vertical2,
+                                Sprite.explosion_vertical1,
+                                Sprite.explosion_vertical,
+                                timeAfterExplode, 60).getFxImage(), x, y - Sprite.SCALED_SIZE * 2);
+
                         if (!BombermanGame.map[yUnit - 3][xUnit].equals("#") && !exploded && !brickonUp1) {
-                            gc.drawImage(Sprite.explosion_vertical_top_last2.getFxImage(), x, y - Sprite.SCALED_SIZE * 3);
+                            gc.drawImage(Sprite.movingSprite(
+                                    Sprite.explosion_vertical_top_last,
+                                    Sprite.explosion_vertical_top_last1,
+                                    Sprite.explosion_vertical_top_last2,
+                                    Sprite.explosion_vertical_top_last1,
+                                    Sprite.explosion_vertical_top_last,
+                                    timeAfterExplode, 60).getFxImage(), x, y - Sprite.SCALED_SIZE * 3);
+
                         }
                     }
                 }
                 if (!BombermanGame.map[yUnit + 1][xUnit].equals("#") && !exploded) {
-                    gc.drawImage(Sprite.explosion_vertical2.getFxImage(), x, y + Sprite.SCALED_SIZE);
+                    gc.drawImage(Sprite.movingSprite(
+                            Sprite.explosion_vertical,
+                            Sprite.explosion_vertical1,
+                            Sprite.explosion_vertical2,
+                            Sprite.explosion_vertical1,
+                            Sprite.explosion_vertical,
+                            timeAfterExplode, 60).getFxImage(), x, y + Sprite.SCALED_SIZE);
+
                     if (!BombermanGame.map[yUnit + 2][xUnit].equals("#") && !exploded && !brickonDown) {
-                        gc.drawImage(Sprite.explosion_vertical2.getFxImage(), x, y + Sprite.SCALED_SIZE * 2);
+                        gc.drawImage(Sprite.movingSprite(
+                                Sprite.explosion_vertical,
+                                Sprite.explosion_vertical1,
+                                Sprite.explosion_vertical2,
+                                Sprite.explosion_vertical1,
+                                Sprite.explosion_vertical,
+                                timeAfterExplode, 60).getFxImage(), x, y + Sprite.SCALED_SIZE * 2);
+
                         if (!BombermanGame.map[yUnit + 3][xUnit].equals("#") && !exploded && !brickonDown1) {
-                            gc.drawImage(Sprite.explosion_vertical_down_last2.getFxImage(), x, y + Sprite.SCALED_SIZE * 3);
+                            gc.drawImage(Sprite.movingSprite(
+                                    Sprite.explosion_vertical_down_last,
+                                    Sprite.explosion_vertical_down_last1,
+                                    Sprite.explosion_vertical_down_last2,
+                                    Sprite.explosion_vertical_down_last1,
+                                    Sprite.explosion_vertical_down_last,
+                                    timeAfterExplode, 60).getFxImage(), x, y + Sprite.SCALED_SIZE * 3);
+
                         }
                     }
                 }
