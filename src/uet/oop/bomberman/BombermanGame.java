@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import static uet.oop.bomberman.entities.Bomber.bombs;
+
 public class BombermanGame extends Application {
 
     public static final int WIDTH = 31;
@@ -169,8 +171,8 @@ public class BombermanGame extends Application {
         }
 
         //Bomb init
-        Entity bomb = new Bomb(5, 21, Sprite.bomb.getFxImage());
-        stillObjects.add(bomb);
+        //Entity bomb = new Bomb(5, 21, Sprite.bomb.getFxImage());
+        //stillObjects.add(bomb);
 
         myReader.close();
     }
@@ -185,6 +187,9 @@ public class BombermanGame extends Application {
             entity.update();
         });
         stillObjects.removeIf(entity -> entity.getTimeToDie() == 0);
+        for (Bomb bomb : bombs) {
+            bomb.update();
+        }
 
     }
 
@@ -192,5 +197,8 @@ public class BombermanGame extends Application {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         stillObjects.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
+        for (Bomb bomb : bombs) {
+            bomb.render(gc);
+        }
     }
 }

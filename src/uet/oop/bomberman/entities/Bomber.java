@@ -10,7 +10,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Pair;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.graphics.Sprite;
-import uet.oop.bomberman.utils.Collision;
 
 
 import java.util.ArrayList;
@@ -41,6 +40,8 @@ public class Bomber extends Entity {
      */
 
     private boolean canMove = false;
+
+    public static final List<Bomb> bombs = new ArrayList<>();
 
     public Bomber(int x, int y, Image img) {
         super(x, y, img);
@@ -91,6 +92,9 @@ public class Bomber extends Entity {
                         direction = "right";
                         //setxUnit(xUnit + 1);
                         break;
+                    }
+                    case SPACE: {
+                        bombs.add(new Bomb(yUnit, xUnit, Sprite.bomb.getFxImage()));
                     }
                     default:
                         break;
@@ -245,8 +249,3 @@ public class Bomber extends Entity {
         }
     }
 }
-
-
-
-
-
