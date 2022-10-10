@@ -184,6 +184,7 @@ public class Bomb extends Entity {
             if (timeAfterExplode > 0) {
                 timeAfterExplode--;
                 kill();
+                BombermanGame.explosionSound.play();
             } else {
                 exploded = true;
                 timeToDie = 0;

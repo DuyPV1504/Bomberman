@@ -11,7 +11,9 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import uet.oop.bomberman.enemy.Balloon;
 import uet.oop.bomberman.enemy.Oneal;
@@ -35,9 +37,11 @@ public class BombermanGame extends Application {
     public static List<Entity> entities = new ArrayList<>();
     public static List<Entity> stillObjects = new ArrayList<>();
     public static String[][] map = new String[HEIGHT][WIDTH];
+    public static AudioClip explosionSound;
 
     private GraphicsContext gc;
     private Canvas canvas;
+    private MediaPlayer mediaPlayer;
     @FXML
     Button startButton;
 
@@ -69,23 +73,27 @@ public class BombermanGame extends Application {
         Entity bomberman = new Bomber(6, 7, Sprite.player_right.getFxImage());
         entities.add(bomberman);
 
+        // Music
+        Media bgMusic;
+
+        try {
+            bgMusic = new Media(new File("res\\sound\\Abstraction - Patreon Goal Reward Loops\\Patreon Goal Reward Loops - Track 05.wav").toURI().toString());
+            mediaPlayer = new MediaPlayer(bgMusic);
+            explosionSound = new AudioClip(new File("res\\sound\\clip audio\\Bomberman SFX (3).wav").toURI().toString());
+
+        } catch (Exception e) {
+            System.out.println("Error with playing sound.");
+            e.printStackTrace();
+        }
+
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
                 render();
                 update();
+
             }
         };
-
-        //Music
-//        try {
-//            Media media = new Media(new File("res\\sound\\Abstraction - Patreon Goal Reward Loops\\Patreon Goal Reward Loops - Track 05.wav").toURI().toString());
-//            javafx.scene.media.MediaPlayer mediaPlayer = new javafx.scene.media.MediaPlayer(media);
-//            mediaPlayer.play();
-//        } catch (Exception e) {
-//            System.out.println("Error with playing sound.");
-//            e.printStackTrace();
-//        }
 
         // Them scene vao stage
         Stage stage = (Stage) startButton.getScene().getWindow();
@@ -203,6 +211,8 @@ public class BombermanGame extends Application {
             bomb.update();
         }
 
+        //Play bg music
+        mediaPlayer.play();
     }
 
     public void render() {
