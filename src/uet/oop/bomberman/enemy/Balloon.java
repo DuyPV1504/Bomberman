@@ -22,6 +22,7 @@ import uet.oop.bomberman.graphics.Sprite;
         dead2 = Sprite.mob_dead1;
         dead3 = Sprite.mob_dead2;
         dead4 = Sprite.mob_dead3;
+        symbol = "1";
      }
 
 

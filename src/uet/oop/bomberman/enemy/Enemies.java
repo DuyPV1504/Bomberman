@@ -33,6 +33,9 @@ public abstract class Enemies extends Entity {
     protected Sprite dead3;
     protected Sprite dead4;
 
+    //Symbol
+    protected String symbol;
+
     public Enemies(int x, int y, Image img) {
         super(x, y, img);
         this.collisionBox = new Rectangle(x, y, Sprite.SCALED_SIZE, Sprite.SCALED_SIZE);
@@ -72,7 +75,7 @@ public abstract class Enemies extends Entity {
             isInsideBlock = true;
 
             //Update map
-            BombermanGame.map[yUnit][xUnit] = "2";
+            BombermanGame.map[yUnit][xUnit] = symbol;
             BombermanGame.map[yUnit][xUnit + 1] = "+";
         }
 
@@ -98,7 +101,7 @@ public abstract class Enemies extends Entity {
             isInsideBlock = true;
 
             //Update map
-            BombermanGame.map[yUnit][xUnit] = "2";
+            BombermanGame.map[yUnit][xUnit] = symbol;
             BombermanGame.map[yUnit][xUnit - 1] = "+";
         }
     }
@@ -122,7 +125,7 @@ public abstract class Enemies extends Entity {
             isInsideBlock = true;
 
             //Update map
-            BombermanGame.map[yUnit][xUnit] = "2";
+            BombermanGame.map[yUnit][xUnit] = symbol;
             BombermanGame.map[yUnit + 1][xUnit] = "+";
         }
     }
@@ -147,7 +150,7 @@ public abstract class Enemies extends Entity {
             isInsideBlock = true;
 
             //Update map
-            BombermanGame.map[yUnit][xUnit] = "2";
+            BombermanGame.map[yUnit][xUnit] = symbol;
             BombermanGame.map[yUnit - 1][xUnit] = "+";
         }
     }
@@ -157,7 +160,7 @@ public abstract class Enemies extends Entity {
      * Pathfinding.
      */
     private boolean findRoad(int currX, int currY, int PlayerX, int PlayerY, String[][] map) {
-        String[] obstacle = {"#","*","x","v"};
+        String[] obstacle = {"#","*","x","v","2","1"};
 
         //Nếu thấy player thì trả về true
         if (currX == PlayerX && currY == PlayerY) {

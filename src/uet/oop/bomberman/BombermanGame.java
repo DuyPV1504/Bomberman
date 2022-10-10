@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.media.Media;
 import javafx.stage.Stage;
 import uet.oop.bomberman.enemy.Balloon;
 import uet.oop.bomberman.enemy.Oneal;
@@ -21,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 import static uet.oop.bomberman.entities.Bomber.bombs;
@@ -45,8 +47,8 @@ public class BombermanGame extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("Menu.fxml"));
-        stage.setTitle("Hello World");
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("Menu.fxml")));
+        stage.setTitle("Bomberman");
         stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
         stage.show();
     }
@@ -74,6 +76,16 @@ public class BombermanGame extends Application {
                 update();
             }
         };
+
+        //Music
+//        try {
+//            Media media = new Media(new File("res\\sound\\Abstraction - Patreon Goal Reward Loops\\Patreon Goal Reward Loops - Track 05.wav").toURI().toString());
+//            javafx.scene.media.MediaPlayer mediaPlayer = new javafx.scene.media.MediaPlayer(media);
+//            mediaPlayer.play();
+//        } catch (Exception e) {
+//            System.out.println("Error with playing sound.");
+//            e.printStackTrace();
+//        }
 
         // Them scene vao stage
         Stage stage = (Stage) startButton.getScene().getWindow();
