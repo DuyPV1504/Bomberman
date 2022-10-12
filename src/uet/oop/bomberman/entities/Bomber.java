@@ -94,6 +94,10 @@ public class Bomber extends Entity {
                         break;
                     }
                     case SPACE: {
+                        int a = x + 8;
+                        int b = y + 8;
+                        xUnit = a/32;
+                        yUnit = b/32;
                         bombs.add(new Bomb(yUnit, xUnit, Sprite.bomb.getFxImage()));
                     }
                     default:
@@ -172,9 +176,9 @@ public class Bomber extends Entity {
                 if (step == 2) {
                     img = Sprite.player_left.getFxImage();
                 }
-                if (step == 3) {
+                /* if (step == 3) {
                     img = Sprite.player_left_2.getFxImage();
-                }
+                } */
                 break;
             }
             case "right": {
@@ -187,9 +191,9 @@ public class Bomber extends Entity {
                 if (step == 2) {
                     img = Sprite.player_right.getFxImage();
                 }
-                if (step == 3) {
+                /*if (step == 3) {
                     img = Sprite.player_right_2.getFxImage();
-                }
+                } */
                 break;
             }
         }
@@ -240,8 +244,8 @@ public class Bomber extends Entity {
         else {
             stepCount = 0;
         }
-        if (stepCount == 3) {
-            if (step != 3) {
+        if (stepCount == 5) {
+            if (step != 5) {
                 step++;
             }
             else step = 0;
