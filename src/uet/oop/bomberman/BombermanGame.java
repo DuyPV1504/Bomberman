@@ -174,15 +174,15 @@ public class BombermanGame extends Application {
                     Entity layer = new Grass(i, j, Sprite.grass.getFxImage());
                     stillObjects.add(layer);
 
-                    //Tao wall
-                    Entity object;
-                    object = new Wall(i, j, Sprite.wall.getFxImage());
-                    stillObjects.add(object);
-
                     //Tạo bomb item
-                    Entity object1;
+                     Entity object1;
                     object1 = new BombItem(i, j, Sprite.powerup_bombs.getFxImage());
-                    entities.add(object1);
+                    stillObjects.add(object1);
+
+                    //Tao brick
+                    Entity object;
+                    object = new Brick(i, j, Sprite.brick.getFxImage());
+                    stillObjects.add(object);
 
                 }  else if (type.equals("f")) {
 
@@ -190,15 +190,15 @@ public class BombermanGame extends Application {
                     Entity layer = new Grass(i, j, Sprite.grass.getFxImage());
                     stillObjects.add(layer);
 
-                    //Tao wall
-                    Entity object1;
-                    object1 = new Wall(i, j, Sprite.wall.getFxImage());
-                    stillObjects.add(object1);
-
                     //Tạo flame item
                     Entity object;
                     object = new FlameItem(i, j, Sprite.powerup_flames.getFxImage());
-                    entities.add(object);
+                    stillObjects.add(object);
+
+                    //Tao brick
+                    Entity object1;
+                    object1 = new Brick(i, j, Sprite.brick.getFxImage());
+                    stillObjects.add(object1);
 
                 }  else if (type.equals("s")) {
 
@@ -206,15 +206,15 @@ public class BombermanGame extends Application {
                     Entity layer = new Grass(i, j, Sprite.grass.getFxImage());
                     stillObjects.add(layer);
 
-                    //Tao wall
-                    Entity object;
-                    object = new Wall(i, j, Sprite.wall.getFxImage());
-                    stillObjects.add(object);
-
                     //Tạo speed item
                     Entity object1;
                     object1 = new SpeedItem(i, j, Sprite.powerup_speed.getFxImage());
-                    entities.add(object1);
+                    stillObjects.add(object1);
+
+                    //Tao brick
+                    Entity object;
+                    object = new Brick(i, j, Sprite.brick.getFxImage());
+                    stillObjects.add(object);
 
                 } else if (type.equals("p")) {
                     //Đặt cỏ ở dưới
