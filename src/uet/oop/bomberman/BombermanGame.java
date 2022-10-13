@@ -19,9 +19,9 @@ import uet.oop.bomberman.enemy.Balloon;
 import uet.oop.bomberman.enemy.Oneal;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.utils.NetworkServer;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -55,6 +55,9 @@ public class BombermanGame extends Application {
         stage.setTitle("Bomberman");
         stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
         stage.show();
+
+        //Socket
+        NetworkServer.init();
     }
 
     public void startGame() throws Exception {
@@ -92,6 +95,12 @@ public class BombermanGame extends Application {
                 render();
                 update();
 
+                //Listen to client
+                try {
+                    NetworkServer.handleClient();
+                } catch (IOException ignored) {
+                    /* Client haven't response yet */
+                }
             }
         };
 
