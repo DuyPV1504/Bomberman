@@ -1,4 +1,4 @@
-package uet.oop.bomberman.entities;
+package uet.oop.bomberman.Bomber;
 
 import ActiveEntity.Control;
 import javafx.event.EventHandler;
@@ -9,6 +9,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Pair;
 import uet.oop.bomberman.BombermanGame;
+import uet.oop.bomberman.entities.Bomb;
+import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.graphics.Sprite;
 
 
@@ -17,7 +19,7 @@ import java.util.List;
 
 import static uet.oop.bomberman.BombermanGame.scene;
 
-public class Bomber extends Entity {
+public abstract class Bomber extends Entity {
 
     private List<Pair<Integer, Integer>> road = new ArrayList<>();
 
@@ -26,9 +28,9 @@ public class Bomber extends Entity {
     private int COLLISION_BOX_WIDTH = 15;
     private int COLLISION_BOX_HEIGHT = 28;
 
-    private String direction = "stay";
-    private int speed_x = 0;
-    private int speed_y = 0;
+    protected String direction = "stay";
+    protected int speed_x = 0;
+    protected int speed_y = 0;
     /*public static final int IDLE = 0;
     public static final int DOWN = 1;
     public static final int UP = 2;
@@ -48,77 +50,7 @@ public class Bomber extends Entity {
         this.collisionBox = new Rectangle(x + 3, y + 2, COLLISION_BOX_WIDTH, COLLISION_BOX_HEIGHT);
     }
 
-    public Bomber(int xUnit, int yUnit, Image img, String direction, int step, int stepCount) {
-        super(xUnit, yUnit, img, direction, step, stepCount);
-    }
-
-    private void move() {
-        BombermanGame.scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent Keyevent) {
-                this.handleEvent(Keyevent);
-            }
-
-            private void handleEvent(KeyEvent keyEvent) {
-                switch (keyEvent.getCode()) {
-                    case UP: {
-                        //y -= Sprite.SCALED_SIZE;
-                        speed_y = -1;
-                        speed_x = 0;
-                        direction = "up";
-                        //setyUnit(yUnit - 1);
-                        break;
-                    }
-                    case DOWN: {
-                        //y += Sprite.SCALED_SIZE;
-                        speed_y = 1;
-                        speed_x = 0;
-                        direction = "down";
-                        //setyUnit(yUnit + 1);
-                        break;
-                    }
-                    case LEFT: {
-                        //x -= Sprite.SCALED_SIZE;
-                        speed_x = -1;
-                        speed_y = 0;
-                        direction = "left";
-                        //setxUnit(xUnit - 1);
-                        break;
-                    }
-                    case RIGHT: {
-                        //x += Sprite.SCALED_SIZE;
-                        speed_x = 1;
-                        speed_y = 0;
-                        direction = "right";
-                        //setxUnit(xUnit + 1);
-                        break;
-                    }
-                    case SPACE: {
-                        int a = x + 8;
-                        int b = y + 8;
-                        xUnit = a/32;
-                        yUnit = b/32;
-                        bombs.add(new Bomb(yUnit, xUnit, Sprite.bomb.getFxImage()));
-                    }
-                    default:
-                        break;
-                    // currStt = Bomber.IDLE;
-
-                }
-            }
-        });
-
-        scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
-            public void handle(KeyEvent e) {
-                step = 0;
-                stepCount = 0;
-                loadAnimation();
-                direction = "stay";
-                setxUnit(xUnit);
-                setyUnit(yUnit);
-            }
-        });
-    }
+    protected abstract void move();
 
     private void collisionUpdate() {
         this.collisionBox.setX(x + 3);

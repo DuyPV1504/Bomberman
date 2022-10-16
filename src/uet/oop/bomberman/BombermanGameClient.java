@@ -56,17 +56,45 @@ public class BombermanGameClient extends Application {
                     }
                     break;
                 case S:
+                    try {
+                        NetworkClient.send("DOWN");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
                     break;
                 case A:
+                    try {
+                        NetworkClient.send("LEFT");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
                     break;
                 case D:
+                    try {
+                        NetworkClient.send("RIGHT");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
                     break;
                 case ALT:
+                    try {
+                        NetworkClient.send("BOMB");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
                     break;
+            }
+        });
+
+        scene.setOnKeyReleased(event -> {
+            try {
+                NetworkClient.send("STOP");
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
 

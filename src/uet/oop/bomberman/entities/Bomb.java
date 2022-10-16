@@ -5,8 +5,6 @@ import javafx.scene.image.Image;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.graphics.Sprite;
 
-import static uet.oop.bomberman.entities.Bomber.bombs;
-
 public class Bomb extends Entity {
     private int timeToExplode = 180;
     private int timeAfterExplode = 50;

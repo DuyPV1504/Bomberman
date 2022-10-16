@@ -15,6 +15,9 @@ import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
+import uet.oop.bomberman.Bomber.Bomber;
+import uet.oop.bomberman.Bomber.BomberClient;
+import uet.oop.bomberman.Bomber.BomberServer;
 import uet.oop.bomberman.enemy.Balloon;
 import uet.oop.bomberman.enemy.Oneal;
 import uet.oop.bomberman.entities.*;
@@ -27,7 +30,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
-import static uet.oop.bomberman.entities.Bomber.bombs;
+import static uet.oop.bomberman.Bomber.Bomber.bombs;
 
 public class BombermanGame extends Application {
 
@@ -38,6 +41,7 @@ public class BombermanGame extends Application {
     public static List<Entity> stillObjects = new ArrayList<>();
     public static String[][] map = new String[HEIGHT][WIDTH];
     public static AudioClip explosionSound;
+    public static NetworkServer network;
 
     private GraphicsContext gc;
     private Canvas canvas;
@@ -55,9 +59,6 @@ public class BombermanGame extends Application {
         stage.setTitle("Bomberman");
         stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
         stage.show();
-
-        //Socket
-        // NetworkServer.init();
     }
 
     public void startGame() throws Exception {
@@ -72,9 +73,14 @@ public class BombermanGame extends Application {
         // Tao scene
         scene = new Scene(root);
 
+        // Tao socket
+        network = new NetworkServer();
+
         // bomberman init
-        Entity bomberman = new Bomber(6, 7, Sprite.player_right.getFxImage());
+        Entity bomberman = new BomberServer(6, 7, Sprite.player_right.getFxImage());
+        Entity bombermanClient = new BomberClient(11, 29, Sprite.player_right.getFxImage());
         entities.add(bomberman);
+        entities.add(bombermanClient);
 
         // Music
         Media bgMusic;
@@ -96,14 +102,12 @@ public class BombermanGame extends Application {
                 update();
 
                 //Listen to client
-                /*
                 try {
-                    NetworkServer.handleClient();
+                    network.handleClient();
+                    System.out.println(network.getClientLine());
                 } catch (IOException ignored) {
-                    // Client haven't response yet
-            }
-
-                 */
+                    /* Client haven't response yet */
+                }
 
             }
         };

@@ -10,9 +10,9 @@ public class NetworkServer {
     public static BufferedWriter os;
     private static ServerSocket listener = null;
     private static Socket socketOfServer = null;
-    public static String clientLine;
+    private String clientLine;
 
-    public static void init() {
+    public NetworkServer() {
         try {
             listener = new ServerSocket(9999);
             System.out.println("Server is running...");
@@ -28,8 +28,12 @@ public class NetworkServer {
         }
     }
 
-    public static void handleClient() throws IOException {
+    public String getClientLine() {
+        return clientLine;
+    }
+
+    public void handleClient() throws IOException {
         clientLine = is.readLine();
-        System.out.println(clientLine);
+//        System.out.println(clientLine);
     }
 }
