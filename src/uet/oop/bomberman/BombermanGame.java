@@ -57,7 +57,7 @@ public class BombermanGame extends Application {
         stage.show();
 
         //Socket
-        NetworkServer.init();
+        // NetworkServer.init();
     }
 
     public void startGame() throws Exception {
@@ -96,13 +96,19 @@ public class BombermanGame extends Application {
                 update();
 
                 //Listen to client
+                /*
                 try {
                     NetworkServer.handleClient();
                 } catch (IOException ignored) {
-                    /* Client haven't response yet */
-                }
+                    // Client haven't response yet
+            }
+
+                 */
+
             }
         };
+
+
 
         // Them scene vao stage
         Stage stage = (Stage) startButton.getScene().getWindow();
