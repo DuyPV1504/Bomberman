@@ -19,6 +19,7 @@ import uet.oop.bomberman.Bomber.Bomber;
 import uet.oop.bomberman.Bomber.BomberClient;
 import uet.oop.bomberman.Bomber.BomberServer;
 import uet.oop.bomberman.enemy.Balloon;
+import uet.oop.bomberman.enemy.Enemies;
 import uet.oop.bomberman.enemy.Oneal;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Sprite;
@@ -265,18 +266,41 @@ public class BombermanGame extends Application {
     }
 
     public void update() {
+        final Bomber[] bomber = new Bomber[1];
         entities.forEach(entity -> {
             entity.update();
+            if (entity instanceof BomberServer) bomber[0] = (Bomber) entity;
+
+            if (entity instanceof Enemies  && bomber[0] != null){
+                if (entity.getyUnit() == bomber[0].getyUnit()
+                        && entity.getxUnit() == bomber[0].getxUnit()){
+                    bomber[0].setAlive(false);
+                }
+            }
         });
         entities.removeIf(entity -> entity.getTimeToDie() == 0);
 
+
         stillObjects.forEach(entity -> {
             entity.update();
+            if (entity instanceof FlameItem  && bomber[0] != null){
+                if (entity.getyUnit() == bomber[0].getyUnit()
+                        && entity.getxUnit() == bomber[0].getxUnit()){
+                    System.out.println("Flame");
+                    ((FlameItem) entity).setReceived(true);
+                    bomber[0].setBombRadius(bomber[0].getBombRadius() + 1);
+                }
+            }
         });
         stillObjects.removeIf(entity -> entity.getTimeToDie() == 0);
+        if (bomber[0] != null) {
+            bomber[0].bombs.forEach(bomb1 -> bomb1.setRadius(bomber[0].getBombRadius()));
+        }
+
         for (Bomb bomb : bombs) {
             bomb.update();
         }
+        bombs.removeIf(bomb -> bomb.isExploded());
 
         //Play bg music
         mediaPlayer.play();

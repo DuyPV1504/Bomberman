@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static uet.oop.bomberman.BombermanGame.scene;
+import static uet.oop.bomberman.graphics.Sprite.*;
 
 public abstract class Bomber extends Entity {
 
@@ -31,6 +32,8 @@ public abstract class Bomber extends Entity {
     protected String direction = "stay";
     protected int speed_x = 0;
     protected int speed_y = 0;
+
+    private int bombRadius;
     /*public static final int IDLE = 0;
     public static final int DOWN = 1;
     public static final int UP = 2;
@@ -48,9 +51,18 @@ public abstract class Bomber extends Entity {
     public Bomber(int x, int y, Image img) {
         super(x, y, img);
         this.collisionBox = new Rectangle(x + 3, y + 2, COLLISION_BOX_WIDTH, COLLISION_BOX_HEIGHT);
+        this.bombRadius = 1;
     }
 
     protected abstract void move();
+
+    public void setBombRadius(int bombRadius) {
+        this.bombRadius = bombRadius;
+    }
+
+    public int getBombRadius() {
+        return bombRadius;
+    }
 
     private void collisionUpdate() {
         this.collisionBox.setX(x + 3);
@@ -133,55 +145,63 @@ public abstract class Bomber extends Entity {
 
     @Override
     public void update() {
+        if (isAlive) {
+            collisionUpdate();
+            move();
+            switch (direction) {
+                case "up": {
+                    if (Control.collisionUp(this.x, this.y))
+                        canMove = true;
+                    break;
+                }
+                case "down": {
+                    if (Control.collisionDown(this.x, this.y))
+                        canMove = true;
+                    break;
+                }
+                case "left": {
+                    if (Control.collisionLeft(this.x, this.y))
+                        canMove = true;
+                    break;
+                }
+                case "right": {
+                    if (Control.collisionRight(this.x, this.y))
+                        canMove = true;
+                    break;
+                }
+                default:
+                    break;
+            }
 
-        collisionUpdate();
-        move();
-        switch (direction) {
-            case "up": {
-                if (Control.collisionUp(this.x, this.y))
-                    canMove = true;
-                break;
+            if (canMove) {
+                x = x + speed_x;
+                setxUnit(x / 32);
+                y = y + speed_y;
+                setyUnit(y / 32);
+                canMove = false;
             }
-            case "down": {
-                if (Control.collisionDown(this.x, this.y))
-                    canMove = true;
-                break;
-            }
-            case "left": {
-                if (Control.collisionLeft(this.x, this.y))
-                    canMove = true;
-                break;
-            }
-            case "right": {
-                if (Control.collisionRight(this.x, this.y))
-                    canMove = true;
-                break;
-            }
-            default:
-                break;
-        }
 
-        if (canMove) {
-            x = x + speed_x;
-            setxUnit(x / 32);
-            y = y + speed_y;
-            setyUnit(y / 32);
-            canMove = false;
-        }
-
-        if (!direction.equals("stay")) {
-            stepCount++;
-            loadAnimation();
-        }
-        else {
-            stepCount = 0;
-        }
-        if (stepCount == 5) {
-            if (step != 5) {
-                step++;
+            if (!direction.equals("stay")) {
+                stepCount++;
+                loadAnimation();
+            } else {
+                stepCount = 0;
             }
-            else step = 0;
-            stepCount = 0;
+            if (stepCount == 5) {
+                if (step != 5) {
+                    step++;
+                } else step = 0;
+                stepCount = 0;
+            }
+        } else {
+            System.out.println("DEAD");
+            if (timeToDie > 0) {
+                timeToDie--;
+                this.setImg(Sprite.movingSprite(player_dead3, player_dead3, player_dead2, player_dead1, timeToDie, 30).getFxImage());
+                BombermanGame.map[yUnit][xUnit] = "+";
+            } else {
+                this.setImg(null);
+            }
         }
     }
 }
