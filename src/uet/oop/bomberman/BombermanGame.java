@@ -77,7 +77,7 @@ public class BombermanGame extends Application {
         network = new NetworkServer();
 
         // bomberman init
-        Entity bomberman = new BomberServer(6, 7, Sprite.player_right.getFxImage());
+        Entity bomberman = new BomberServer(1, 1, Sprite.player_right.getFxImage());
         Entity bombermanClient = new BomberClient(11, 29, Sprite.player_right.getFxImage());
         entities.add(bomberman);
         entities.add(bombermanClient);
