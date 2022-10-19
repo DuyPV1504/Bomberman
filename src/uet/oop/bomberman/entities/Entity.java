@@ -31,7 +31,7 @@ public abstract class Entity {
     protected boolean isAlive = true;
 
     //Khởi tạo đối tượng, chuyển từ tọa độ đơn vị sang tọa độ trong canvas
-    public Entity( int yUnit, int xUnit, Image img) {
+    public Entity(int yUnit, int xUnit, Image img) {
         this.xUnit = xUnit;
         this.yUnit = yUnit;
         this.x = xUnit * Sprite.SCALED_SIZE;

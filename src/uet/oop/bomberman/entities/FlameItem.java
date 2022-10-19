@@ -6,6 +6,9 @@ import uet.oop.bomberman.graphics.Sprite;
 
 public class FlameItem extends Entity {
 
+
+    private  boolean isReceived = false;
+
     private int COLLISION_BOX_WIDTH = 26;
     private int COLLISION_BOX_HEIGHT = 24;
 
@@ -15,8 +18,15 @@ public class FlameItem extends Entity {
                 COLLISION_BOX_WIDTH, COLLISION_BOX_HEIGHT);
     }
 
+    public void setReceived(boolean received) {
+        isReceived = received;
+    }
+
     @Override
     public void update() {
-
+        if(isReceived) {
+            setAlive(false);
+            this.img = null;
+        }
     }
 }
