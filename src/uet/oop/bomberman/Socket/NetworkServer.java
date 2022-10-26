@@ -1,16 +1,13 @@
-package uet.oop.bomberman.utils;
+package uet.oop.bomberman.Socket;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class NetworkServer {
+public class NetworkServer extends Network {
 
-    public static BufferedReader is;
-    public static BufferedWriter os;
     private static ServerSocket listener = null;
     private static Socket socketOfServer = null;
-    private String clientLine;
 
     public NetworkServer() {
         try {
@@ -28,12 +25,4 @@ public class NetworkServer {
         }
     }
 
-    public String getClientLine() {
-        return clientLine;
-    }
-
-    public void handleClient() throws IOException {
-        clientLine = is.readLine();
-//        System.out.println(clientLine);
-    }
 }
