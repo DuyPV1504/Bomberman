@@ -4,9 +4,9 @@ import java.io.*;
 import java.net.Socket;
 
 public class NetworkClient extends Network {
-    public NetworkClient() {
+    public NetworkClient(int port) {
         try {
-            Socket socketOfClient = new Socket("localhost", 9999);
+            Socket socketOfClient = new Socket("localhost", port);
             socketOfClient.setSoTimeout(1); //listen timeout
             System.out.println("Connected to server");
             os = new BufferedWriter(new OutputStreamWriter(socketOfClient.getOutputStream()));

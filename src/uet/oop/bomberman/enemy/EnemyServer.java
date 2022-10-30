@@ -3,18 +3,14 @@ package uet.oop.bomberman.enemy;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Pair;
-import uet.oop.bomberman.Bomber.Bomber;
 import uet.oop.bomberman.BombermanGame;
-import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.graphics.Sprite;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class Enemies extends Entity {
-
+public abstract class EnemyServer extends Enemies {
     private List<Pair<Integer, Integer>> road = new ArrayList<>();
     private String[][] map = new String[BombermanGame.HEIGHT][BombermanGame.WIDTH];
     private int oldPlayerX;
@@ -38,7 +34,7 @@ public abstract class Enemies extends Entity {
     //Symbol
     protected String symbol;
 
-    public Enemies(int x, int y, Image img) {
+    public EnemyServer(int x, int y, Image img) {
         super(x, y, img);
         this.collisionBox = new Rectangle(x, y, Sprite.SCALED_SIZE, Sprite.SCALED_SIZE);
         this.oldPlayerX = this.xUnit;
@@ -162,7 +158,7 @@ public abstract class Enemies extends Entity {
      * Pathfinding.
      */
     private boolean findRoad(int currX, int currY, int PlayerX, int PlayerY, String[][] map) {
-        String[] obstacle = {"#","*","x","v","2","1","f"};
+        String[] obstacle = {"#","*","x","v","2","1"};
 
         //Nếu thấy player thì trả về true
         if (currX == PlayerX && currY == PlayerY) {
@@ -299,5 +295,4 @@ public abstract class Enemies extends Entity {
     }
 
     protected abstract void setSprite();
-
 }

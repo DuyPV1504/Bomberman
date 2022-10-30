@@ -9,9 +9,9 @@ public class NetworkServer extends Network {
     private static ServerSocket listener = null;
     private static Socket socketOfServer = null;
 
-    public NetworkServer() {
+    public NetworkServer(int port) {
         try {
-            listener = new ServerSocket(9999);
+            listener = new ServerSocket(port);
             System.out.println("Server is running...");
 
             socketOfServer = listener.accept();

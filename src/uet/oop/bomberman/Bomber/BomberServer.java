@@ -9,7 +9,7 @@ import uet.oop.bomberman.graphics.Sprite;
 import java.io.IOException;
 
 import static uet.oop.bomberman.MainGame.scene;
-import static uet.oop.bomberman.MainGame.network;
+import static uet.oop.bomberman.MainGame.networkBomber;
 
 public class BomberServer extends Bomber {
     public BomberServer(int xUnit, int yUnit, Image img) {
@@ -35,7 +35,9 @@ public class BomberServer extends Bomber {
                         speed_y = -1;
                         speed_x = 0;
                         direction = "up";
-                        network.send("UP");
+                        if (networkBomber != null) {
+                            networkBomber.send("UP");
+                        }
                         //setyUnit(yUnit - 1);
                         break;
                     }
@@ -44,7 +46,9 @@ public class BomberServer extends Bomber {
                         speed_y = 1;
                         speed_x = 0;
                         direction = "down";
-                        network.send("DOWN");
+                        if (networkBomber != null) {
+                            networkBomber.send("DOWN");
+                        }
                         //setyUnit(yUnit + 1);
                         break;
                     }
@@ -53,7 +57,9 @@ public class BomberServer extends Bomber {
                         speed_x = -1;
                         speed_y = 0;
                         direction = "left";
-                        network.send("LEFT");
+                        if (networkBomber != null) {
+                            networkBomber.send("LEFT");
+                        }
                         //setxUnit(xUnit - 1);
                         break;
                     }
@@ -62,7 +68,9 @@ public class BomberServer extends Bomber {
                         speed_x = 1;
                         speed_y = 0;
                         direction = "right";
-                        network.send("RIGHT");
+                        if (networkBomber != null) {
+                            networkBomber.send("RIGHT");
+                        }
                         //setxUnit(xUnit + 1);
                         break;
                     }
@@ -72,7 +80,9 @@ public class BomberServer extends Bomber {
                         xUnit = a/32;
                         yUnit = b/32;
                         bombs.add(new Bomb(yUnit, xUnit, Sprite.bomb.getFxImage()));
-                        network.send("BOMB");
+                        if (networkBomber != null) {
+                            networkBomber.send("BOMB");
+                        }
                     }
                     default:
                         break;
@@ -82,19 +92,19 @@ public class BomberServer extends Bomber {
             }
         });
 
-        scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
-            public void handle(KeyEvent e) {
-                step = 0;
-                stepCount = 0;
-                loadAnimation();
-                direction = "stay";
-                setxUnit(xUnit);
-                setyUnit(yUnit);
-                try {
-                    network.send("STOP");
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
+        scene.setOnKeyReleased(e -> {
+            step = 0;
+            stepCount = 0;
+            loadAnimation();
+            direction = "stay";
+            setxUnit(xUnit);
+            setyUnit(yUnit);
+            try {
+                if (networkBomber != null) {
+                    networkBomber.send("STOP");
                 }
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
             }
         });
     }
