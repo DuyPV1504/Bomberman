@@ -67,7 +67,7 @@ public class BombermanGame extends MainGame {
         scene = new Scene(root);
 
         // Tao socket
-        network = new NetworkServer();
+        networkBomber = new NetworkServer(9999);
 
         // bomberman init
         Entity bomberman = new BomberServer(6, 7, Sprite.player_right.getFxImage());
@@ -96,8 +96,8 @@ public class BombermanGame extends MainGame {
 
                 //Listen to client
                 try {
-                    network.handle();
-                    System.out.println(network.getLine());
+                    networkBomber.handle();
+                    System.out.println(networkBomber.getLine());
                 } catch (IOException ignored) {
                     /* Client haven't response yet */
                 }
@@ -258,15 +258,25 @@ public class BombermanGame extends MainGame {
     }
 
     public void update() {
-        final Bomber[] bomber = new Bomber[1];
+        final Bomber[] bomber = new Bomber[2];
         entities.forEach(entity -> {
             entity.update();
-            if (entity instanceof BomberServer) bomber[0] = (Bomber) entity;
+            if (entity instanceof BomberServer) {
+                bomber[0] = (Bomber) entity;
+            } else if (entity instanceof BomberClient) {
+                bomber[1] = (Bomber) entity;
+            }
 
-            if (entity instanceof Enemies  && bomber[0] != null){
+            if (entity instanceof Enemies  && bomber[0] != null) {
                 if (entity.getyUnit() == bomber[0].getyUnit()
                         && entity.getxUnit() == bomber[0].getxUnit()){
                     bomber[0].setAlive(false);
+                }
+            }
+            if (entity instanceof Enemies  && bomber[1] != null) {
+                if (entity.getyUnit() == bomber[1].getyUnit()
+                        && entity.getxUnit() == bomber[1].getxUnit()){
+                    bomber[1].setAlive(false);
                 }
             }
         });

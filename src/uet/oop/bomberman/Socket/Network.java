@@ -19,6 +19,5 @@ public abstract class Network {
 
     public void handle() throws IOException {
         line = is.readLine();
-//        System.out.println(clientLine);
     }
 }

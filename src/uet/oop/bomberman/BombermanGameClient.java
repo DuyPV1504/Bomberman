@@ -3,7 +3,6 @@ package uet.oop.bomberman;
 //import com.sun.deploy.security.JarSignature;
 
 import uet.oop.bomberman.Bomber.BomberClient;
-import uet.oop.bomberman.Socket.Network;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -16,17 +15,13 @@ import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import uet.oop.bomberman.Bomber.Bomber;
 import uet.oop.bomberman.Bomber.BomberServer;
-import uet.oop.bomberman.enemy.Balloon;
-import uet.oop.bomberman.enemy.Enemies;
-import uet.oop.bomberman.enemy.Oneal;
+import uet.oop.bomberman.enemy.*;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.Socket.NetworkClient;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 import static uet.oop.bomberman.Bomber.Bomber.bombs;
@@ -55,7 +50,7 @@ public class BombermanGameClient extends MainGame {
         scene = new Scene(root);
 
         // Tao socket
-        network = new NetworkClient();
+        networkBomber = new NetworkClient(9999);
 
         // bomberman init
         Entity bomberman = new BomberClient(6, 7, Sprite.player_right.getFxImage());
@@ -84,8 +79,7 @@ public class BombermanGameClient extends MainGame {
 
                 //Listen to client
                 try {
-                    network.handle();
-                    System.out.println(network.getLine());
+                    networkBomber.handle();
                 } catch (IOException ignored) {
                     /* Server haven't response yet */
                 }
@@ -246,15 +240,27 @@ public class BombermanGameClient extends MainGame {
     }
 
     public void update() {
-        final Bomber[] bomber = new Bomber[1];
+        final Bomber[] bomber = new Bomber[2];
         entities.forEach(entity -> {
             entity.update();
-            if (entity instanceof BomberServer) bomber[0] = (Bomber) entity;
+            if (entity instanceof BomberServer) {
+                bomber[0] = (Bomber) entity;
+            } else if (entity instanceof BomberClient) {
 
-            if (entity instanceof Enemies && bomber[0] != null){
+                bomber[1] = (Bomber) entity;
+            }
+
+            if (entity instanceof Enemies  && bomber[0] != null){
                 if (entity.getyUnit() == bomber[0].getyUnit()
                         && entity.getxUnit() == bomber[0].getxUnit()){
                     bomber[0].setAlive(false);
+                }
+            }
+
+            if (entity instanceof Enemies  && bomber[1] != null){
+                if (entity.getyUnit() == bomber[1].getyUnit()
+                        && entity.getxUnit() == bomber[1].getxUnit()){
+                    bomber[1].setAlive(false);
                 }
             }
         });

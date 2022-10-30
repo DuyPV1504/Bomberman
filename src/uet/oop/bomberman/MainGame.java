@@ -19,7 +19,7 @@ public abstract class MainGame extends Application {
     public static List<Entity> stillObjects = new ArrayList<>();
     public static String[][] map = new String[HEIGHT][WIDTH];
     public static AudioClip explosionSound;
-    public static Network network;
+    public static Network networkBomber;
 
     @Override
     public abstract void start(Stage stage) throws Exception;
