@@ -1,6 +1,7 @@
 package uet.oop.bomberman;
 
 //import com.sun.deploy.security.JarSignature;
+import uet.oop.bomberman.Socket.Network;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.fxml.FXML;
@@ -23,7 +24,7 @@ import uet.oop.bomberman.enemy.Enemies;
 import uet.oop.bomberman.enemy.Oneal;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Sprite;
-import uet.oop.bomberman.utils.NetworkServer;
+import uet.oop.bomberman.Socket.NetworkServer;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -33,16 +34,7 @@ import java.util.Scanner;
 
 import static uet.oop.bomberman.Bomber.Bomber.bombs;
 
-public class BombermanGame extends Application {
-
-    public static final int WIDTH = 31;
-    public static final int HEIGHT = 13;
-    public static Scene scene;
-    public static List<Entity> entities = new ArrayList<>();
-    public static List<Entity> stillObjects = new ArrayList<>();
-    public static String[][] map = new String[HEIGHT][WIDTH];
-    public static AudioClip explosionSound;
-    public static NetworkServer network;
+public class BombermanGame extends MainGame {
 
     private GraphicsContext gc;
     private Canvas canvas;
@@ -104,8 +96,8 @@ public class BombermanGame extends Application {
 
                 //Listen to client
                 try {
-                    network.handleClient();
-                    System.out.println(network.getClientLine());
+                    network.handle();
+                    System.out.println(network.getLine());
                 } catch (IOException ignored) {
                     /* Client haven't response yet */
                 }

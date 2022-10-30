@@ -5,6 +5,8 @@ import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.Bomb;
 import uet.oop.bomberman.graphics.Sprite;
 
+import static uet.oop.bomberman.MainGame.*;
+
 public class BomberClient extends Bomber {
     public BomberClient(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
@@ -12,8 +14,9 @@ public class BomberClient extends Bomber {
 
     @Override
     protected void move() {
-        if (BombermanGame.network.getClientLine() != null) {
-            switch (BombermanGame.network.getClientLine()) {
+
+        if (network.getLine() != null) {
+            switch (network.getLine()) {
                 case "UP":
                     direction = "up";
                     speed_y = -1;
