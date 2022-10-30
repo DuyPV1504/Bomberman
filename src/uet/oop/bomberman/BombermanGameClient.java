@@ -101,7 +101,7 @@ public class BombermanGameClient extends MainGame {
 
     public void createMap() throws IOException {
         //đọc file level.txt
-        File level1 = new File("res\\levels\\Level1.txt");
+        File level1 = new File("res\\levels\\LevelMultiplayer.txt");
 
         //Scanner for read interger and BufferedReader for read String
         Scanner myReader = new Scanner(level1);
@@ -178,7 +178,7 @@ public class BombermanGameClient extends MainGame {
                     object = new Brick(i, j, Sprite.brick.getFxImage());
                     stillObjects.add(object);
 
-                }  else if (type.equals("f")) {
+                } else if (type.equals("f")) {
 
                     //Đặt cỏ ở dưới
                     Entity layer = new Grass(i, j, Sprite.grass.getFxImage());
@@ -194,7 +194,7 @@ public class BombermanGameClient extends MainGame {
                     object1 = new Brick(i, j, Sprite.brick.getFxImage());
                     stillObjects.add(object1);
 
-                }  else if (type.equals("s")) {
+                } else if (type.equals("s")) {
 
                     //Đặt cỏ ở dưới
                     Entity layer = new Grass(i, j, Sprite.grass.getFxImage());

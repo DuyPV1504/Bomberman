@@ -162,7 +162,7 @@ public abstract class Enemies extends Entity {
      * Pathfinding.
      */
     private boolean findRoad(int currX, int currY, int PlayerX, int PlayerY, String[][] map) {
-        String[] obstacle = {"#","*","x","v","2","1"};
+        String[] obstacle = {"#","*","x","v","2","1","f"};
 
         //Nếu thấy player thì trả về true
         if (currX == PlayerX && currY == PlayerY) {

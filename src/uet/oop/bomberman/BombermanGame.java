@@ -41,6 +41,8 @@ public class BombermanGame extends MainGame {
     private MediaPlayer mediaPlayer;
     @FXML
     Button startButton;
+    @FXML
+    Button multiplayerButton;
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
@@ -55,6 +57,58 @@ public class BombermanGame extends MainGame {
     }
 
     public void startGame() throws Exception {
+        // Tao Canvas
+        canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
+        gc = canvas.getGraphicsContext2D();
+
+        // Tao root container
+        Group root = new Group();
+        root.getChildren().add(canvas);
+
+        // Tao scene
+        scene = new Scene(root);
+
+
+
+        // bomberman init
+        Entity bomberman = new BomberServer(6, 7, Sprite.player_right.getFxImage());
+        entities.add(bomberman);
+
+        // Music
+        Media bgMusic;
+
+        try {
+            bgMusic = new Media(new File("res\\sound\\Abstraction - Patreon Goal Reward Loops\\Patreon Goal Reward Loops - Track 05.wav").toURI().toString());
+            mediaPlayer = new MediaPlayer(bgMusic);
+            explosionSound = new AudioClip(new File("res\\sound\\clip audio\\Bomberman SFX (3).wav").toURI().toString());
+
+        } catch (Exception e) {
+            System.out.println("Error with playing sound.");
+            e.printStackTrace();
+        }
+
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                render();
+                update();
+
+            }
+        };
+
+
+
+        // Them scene vao stage
+        Stage stage = (Stage) startButton.getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
+
+        timer.start();
+
+        createMap();
+    }
+
+    public void multiplayerGame() throws IOException {
         // Tao Canvas
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
@@ -108,13 +162,13 @@ public class BombermanGame extends MainGame {
 
 
         // Them scene vao stage
-        Stage stage = (Stage) startButton.getScene().getWindow();
+        Stage stage = (Stage) multiplayerButton.getScene().getWindow();
         stage.setScene(scene);
         stage.show();
 
         timer.start();
 
-        createMap();
+        createMapMultiplayer();
     }
 
     public void createMap() throws IOException {
@@ -188,6 +242,146 @@ public class BombermanGame extends MainGame {
 
                     //Tạo bomb item
                      Entity object1;
+                    object1 = new BombItem(i, j, Sprite.powerup_bombs.getFxImage());
+                    stillObjects.add(object1);
+
+                    //Tao brick
+                    Entity object;
+                    object = new Brick(i, j, Sprite.brick.getFxImage());
+                    stillObjects.add(object);
+
+                }  else if (type.equals("f")) {
+
+                    //Đặt cỏ ở dưới
+                    Entity layer = new Grass(i, j, Sprite.grass.getFxImage());
+                    stillObjects.add(layer);
+
+                    //Tạo flame item
+                    Entity object;
+                    object = new FlameItem(i, j, Sprite.powerup_flames.getFxImage());
+                    stillObjects.add(object);
+
+                    //Tao brick
+                    Entity object1;
+                    object1 = new Brick(i, j, Sprite.brick.getFxImage());
+                    stillObjects.add(object1);
+
+                }  else if (type.equals("s")) {
+
+                    //Đặt cỏ ở dưới
+                    Entity layer = new Grass(i, j, Sprite.grass.getFxImage());
+                    stillObjects.add(layer);
+
+                    //Tạo speed item
+                    Entity object1;
+                    object1 = new SpeedItem(i, j, Sprite.powerup_speed.getFxImage());
+                    stillObjects.add(object1);
+
+                    //Tao brick
+                    Entity object;
+                    object = new Brick(i, j, Sprite.brick.getFxImage());
+                    stillObjects.add(object);
+
+                } else if (type.equals("p")) {
+                    //Đặt cỏ ở dưới
+                    Entity layer = new Grass(i, j, Sprite.grass.getFxImage());
+                    stillObjects.add(layer);
+
+                    //Đặt bomberman ở vị trí này
+                    /* entities.get(0).setX(j);
+                    entities.get(0).setY(i); */
+
+                } else {
+
+                    //Tạo cỏ
+                    Entity object;
+                    object = new Grass(i, j, Sprite.grass.getFxImage());
+                    stillObjects.add(object);
+                }
+
+                //Lưu map
+                map[i][j] = type;
+            }
+        }
+
+        //Bomb init
+        //Entity bomb = new Bomb(5, 21, Sprite.bomb.getFxImage());
+        //stillObjects.add(bomb);
+
+        myReader.close();
+    }
+
+    public void createMapMultiplayer() throws IOException {
+        //đọc file level.txt
+        File level1 = new File("res\\levels\\LevelMultiplayer.txt");
+
+        //Scanner for read interger and BufferedReader for read String
+        Scanner myReader = new Scanner(level1);
+
+        //Đọc dòng đầu tiên để lấy kích thước của mảng
+        int level = myReader.nextInt();
+        int row = myReader.nextInt();
+        int column = myReader.nextInt();
+
+        //Lấy map từ file
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < column; j++) {
+                String type = myReader.next();
+
+                if (type.equals("#")) {
+
+                    //Tạo Wall
+                    Entity object;
+                    object = new Wall(i, j, Sprite.wall.getFxImage());
+                    stillObjects.add(object);
+                } else if (type.equals("*")) {
+
+                    //Đặt cỏ ở dưới
+                    Entity layer = new Grass(i, j, Sprite.grass.getFxImage());
+                    stillObjects.add(layer);
+
+                    //Tạo Brick
+                    Entity object;
+                    object = new Brick(i, j, Sprite.brick.getFxImage());
+                    stillObjects.add(object);
+                } else if (type.equals("x")) {
+
+                    //Đặt cỏ ở dưới
+                    Entity layer = new Grass(i, j, Sprite.grass.getFxImage());
+                    stillObjects.add(layer);
+
+                    //Tạo Portal
+                    Entity object;
+                    object = new Portal(i, j, Sprite.portal.getFxImage());
+                    stillObjects.add(object);
+                } else if (type.equals("1")) {
+
+                    //Đặt cỏ ở dưới
+                    Entity layer = new Grass(i, j, Sprite.grass.getFxImage());
+                    stillObjects.add(layer);
+
+                    //Tạo enemy
+                    Entity object;
+                    object = new Balloon(i, j, Sprite.balloom_left1.getFxImage());
+                    entities.add(object);
+                } else if (type.equals("2")) {
+
+                    //Đặt cỏ ở dưới
+                    Entity layer = new Grass(i, j, Sprite.grass.getFxImage());
+                    stillObjects.add(layer);
+
+                    //Tạo enemy
+                    Entity object;
+                    object = new Oneal(i, j, Sprite.oneal_left1.getFxImage());
+                    entities.add(object);
+                } else if (type.equals("b")) {
+
+                    //Đặt cỏ ở dưới
+                    Entity layer = new Grass(i, j, Sprite.grass.getFxImage());
+                    stillObjects.add(layer);
+
+                    //Tạo bomb item
+                    Entity object1;
                     object1 = new BombItem(i, j, Sprite.powerup_bombs.getFxImage());
                     stillObjects.add(object1);
 
