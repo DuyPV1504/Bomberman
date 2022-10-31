@@ -124,7 +124,7 @@ public class BombermanGame extends MainGame {
         networkBomber = new NetworkServer(9999);
 
         // bomberman init
-        Entity bomberman = new BomberServer(6, 1, Sprite.player_right.getFxImage());
+        Entity bomberman = new BomberServer(6, 7, Sprite.player_right.getFxImage());
         Entity bombermanClient = new BomberClient(11, 29, Sprite.player_right.getFxImage());
         entities.add(bomberman);
         entities.add(bombermanClient);
@@ -241,7 +241,7 @@ public class BombermanGame extends MainGame {
                     stillObjects.add(layer);
 
                     //Tạo bomb item
-                     Entity object1;
+                    Entity object1;
                     object1 = new BombItem(i, j, Sprite.powerup_bombs.getFxImage());
                     stillObjects.add(object1);
 
@@ -477,17 +477,47 @@ public class BombermanGame extends MainGame {
         entities.removeIf(entity -> entity.getTimeToDie() == 0);
 
 
-        stillObjects.forEach(entity -> {
-            entity.update();
-            if (entity instanceof FlameItem  && bomber[0] != null){
+//        stillObjects.forEach(entity -> {
+//            entity.update();
+//            if (entity instanceof FlameItem  && bomber[0] != null){
+//                if (entity.getyUnit() == bomber[0].getyUnit()
+//                        && entity.getxUnit() == bomber[0].getxUnit()){
+//                    System.out.println("Flame");
+//                    ((FlameItem) entity).setReceived(true);
+//                    bomber[0].setBombRadius(bomber[0].getBombRadius() + 1);
+//                }
+//            }
+//        });
+        for (Entity entity: stillObjects) {
+            if (entity instanceof FlameItem  && bomber[0] != null) {
                 if (entity.getyUnit() == bomber[0].getyUnit()
                         && entity.getxUnit() == bomber[0].getxUnit()){
                     System.out.println("Flame");
                     ((FlameItem) entity).setReceived(true);
+                    entity.setTimeToDie(0);
                     bomber[0].setBombRadius(bomber[0].getBombRadius() + 1);
                 }
             }
-        });
+            else if (entity instanceof BombItem  && bomber[0] != null) {
+                if (entity.getyUnit() == bomber[0].getyUnit()
+                        && entity.getxUnit() == bomber[0].getxUnit()){
+                    System.out.println("Bomb");
+                    ((BombItem) entity).setReceived(true);
+                    entity.setTimeToDie(0);
+                    bomber[0].setBombRadius(bomber[0].getBombRadius() + 1);
+                }
+            }
+            else if (entity instanceof SpeedItem  && bomber[0] != null) {
+                if (entity.getyUnit() == bomber[0].getyUnit()
+                        && entity.getxUnit() == bomber[0].getxUnit()){
+                    System.out.println("Speed");
+                    ((SpeedItem) entity).setReceived(true);
+                    entity.setTimeToDie(0);
+                    bomber[0].setBombRadius(bomber[0].getBombRadius() + 1);
+                }
+            }
+            entity.update();
+        }
         stillObjects.removeIf(entity -> entity.getTimeToDie() == 0);
         if (bomber[0] != null) {
             bomber[0].bombs.forEach(bomb1 -> bomb1.setRadius(bomber[0].getBombRadius()));
