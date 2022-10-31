@@ -20,6 +20,7 @@ public abstract class MainGame extends Application {
     public static String[][] map = new String[HEIGHT][WIDTH];
     public static AudioClip explosionSound;
     public static Network networkBomber;
+//    public static GraphicsContext gc;
 
     @Override
     public abstract void start(Stage stage) throws Exception;

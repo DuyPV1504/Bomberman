@@ -1,6 +1,7 @@
 package uet.oop.bomberman.enemy;
 
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Pair;
 import uet.oop.bomberman.Bomber.Bomber;
@@ -40,18 +41,17 @@ public abstract class Enemies extends Entity {
 
     public Enemies(int x, int y, Image img) {
         super(x, y, img);
-        this.collisionBox = new Rectangle(x, y, Sprite.SCALED_SIZE, Sprite.SCALED_SIZE);
+        this.collisionBox = new Rectangle(x + 2, y + 2, Sprite.SCALED_SIZE - 4, Sprite.SCALED_SIZE - 4);
         this.oldPlayerX = this.xUnit;
         this.oldPlayerY = this.yUnit;
-
     }
 
     /**
-     * Update collision box to oneal position.
+     * Update collision box to enemies position.
      */
     private void collisionUpdate() {
-        this.collisionBox.setX(x);
-        this.collisionBox.setY(y);
+        this.collisionBox.setX(x + 2);
+        this.collisionBox.setY(y + 2);
     }
 
     /**
@@ -227,6 +227,7 @@ public abstract class Enemies extends Entity {
 
     @Override
     public void update() {
+        collisionUpdate();
         if (isAlive) {
 
             //Tái hiện lại map

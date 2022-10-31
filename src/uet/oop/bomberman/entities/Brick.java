@@ -14,7 +14,7 @@ public class Brick extends Entity {
     @Override
     public void update() {
         if (!isAlive) {
-            if (timeToDie > 0) {
+            if (timeToDie > -10) {
                 this.setImg(Sprite.movingSprite(Sprite.brick_exploded2,
                         Sprite.brick_exploded1, Sprite.brick_exploded, timeToDie, 60).getFxImage());
                 timeToDie--;
