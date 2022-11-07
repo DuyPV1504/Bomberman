@@ -194,6 +194,7 @@ public class BombermanGame extends MainGame {
                     Entity object;
                     object = new Wall(i, j, Sprite.wall.getFxImage());
                     stillObjects.add(object);
+                    map[i][j] = "#";
                 } else if (type.equals("*")) {
 
                     //Đặt cỏ ở dưới
@@ -204,6 +205,7 @@ public class BombermanGame extends MainGame {
                     Entity object;
                     object = new Brick(i, j, Sprite.brick.getFxImage());
                     stillObjects.add(object);
+                    map[i][j] = "*";
                 } else if (type.equals("x")) {
 
                     //Đặt cỏ ở dưới
@@ -214,6 +216,7 @@ public class BombermanGame extends MainGame {
                     Entity object;
                     object = new Portal(i, j, Sprite.portal.getFxImage());
                     stillObjects.add(object);
+                    map[i][j] = "x";
                 } else if (type.equals("1")) {
 
                     //Đặt cỏ ở dưới
@@ -224,6 +227,7 @@ public class BombermanGame extends MainGame {
                     Entity object;
                     object = new Balloon(i, j, Sprite.balloom_left1.getFxImage());
                     entities.add(object);
+                    map[i][j] = "+";
                 } else if (type.equals("2")) {
 
                     //Đặt cỏ ở dưới
@@ -234,6 +238,7 @@ public class BombermanGame extends MainGame {
                     Entity object;
                     object = new Oneal(i, j, Sprite.oneal_left1.getFxImage());
                     entities.add(object);
+                    map[i][j] = "+";
                 } else if (type.equals("b")) {
 
                     //Đặt cỏ ở dưới
@@ -249,6 +254,7 @@ public class BombermanGame extends MainGame {
                     Entity object;
                     object = new Brick(i, j, Sprite.brick.getFxImage());
                     stillObjects.add(object);
+                    map[i][j] = "*";
 
                 }  else if (type.equals("f")) {
 
@@ -265,6 +271,7 @@ public class BombermanGame extends MainGame {
                     Entity object1;
                     object1 = new Brick(i, j, Sprite.brick.getFxImage());
                     stillObjects.add(object1);
+                    map[i][j] = "*";
 
                 }  else if (type.equals("s")) {
 
@@ -281,11 +288,13 @@ public class BombermanGame extends MainGame {
                     Entity object;
                     object = new Brick(i, j, Sprite.brick.getFxImage());
                     stillObjects.add(object);
+                    map[i][j] = "*";
 
                 } else if (type.equals("p")) {
                     //Đặt cỏ ở dưới
                     Entity layer = new Grass(i, j, Sprite.grass.getFxImage());
                     stillObjects.add(layer);
+                    map[i][j] = "+";
 
                     //Đặt bomberman ở vị trí này
                     /* entities.get(0).setX(j);
@@ -297,10 +306,11 @@ public class BombermanGame extends MainGame {
                     Entity object;
                     object = new Grass(i, j, Sprite.grass.getFxImage());
                     stillObjects.add(object);
+                    map[i][j] = "+";
                 }
 
                 //Lưu map
-                map[i][j] = type;
+                //map[i][j] = type;
             }
         }
 
@@ -476,22 +486,11 @@ public class BombermanGame extends MainGame {
         });
         entities.removeIf(entity -> entity.getTimeToDie() == 0);
 
-
-//        stillObjects.forEach(entity -> {
-//            entity.update();
-//            if (entity instanceof FlameItem  && bomber[0] != null){
-//                if (entity.getyUnit() == bomber[0].getyUnit()
-//                        && entity.getxUnit() == bomber[0].getxUnit()){
-//                    System.out.println("Flame");
-//                    ((FlameItem) entity).setReceived(true);
-//                    bomber[0].setBombRadius(bomber[0].getBombRadius() + 1);
-//                }
-//            }
-//        });
         for (Entity entity: stillObjects) {
             if (entity instanceof FlameItem  && bomber[0] != null) {
                 if (entity.getyUnit() == bomber[0].getyUnit()
-                        && entity.getxUnit() == bomber[0].getxUnit()){
+                        && entity.getxUnit() == bomber[0].getxUnit()
+                        && !Objects.equals(map[entity.getyUnit()][entity.getxUnit()], "*")){
                     System.out.println("Flame");
                     ((FlameItem) entity).setReceived(true);
                     entity.setTimeToDie(0);
@@ -500,7 +499,8 @@ public class BombermanGame extends MainGame {
             }
             else if (entity instanceof BombItem  && bomber[0] != null) {
                 if (entity.getyUnit() == bomber[0].getyUnit()
-                        && entity.getxUnit() == bomber[0].getxUnit()){
+                        && entity.getxUnit() == bomber[0].getxUnit()
+                        && !Objects.equals(map[entity.getyUnit()][entity.getxUnit()], "*")){
                     System.out.println("Bomb");
                     ((BombItem) entity).setReceived(true);
                     entity.setTimeToDie(0);
@@ -509,7 +509,8 @@ public class BombermanGame extends MainGame {
             }
             else if (entity instanceof SpeedItem  && bomber[0] != null) {
                 if (entity.getyUnit() == bomber[0].getyUnit()
-                        && entity.getxUnit() == bomber[0].getxUnit()){
+                        && entity.getxUnit() == bomber[0].getxUnit()
+                        && !Objects.equals(map[entity.getyUnit()][entity.getxUnit()], "*")){
                     System.out.println("Speed");
                     ((SpeedItem) entity).setReceived(true);
                     entity.setTimeToDie(0);
