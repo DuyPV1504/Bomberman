@@ -177,8 +177,8 @@ public abstract class Bomber extends Entity {
             if (canMove) {
                 x = x + speed_x;
                 y = y + speed_y;
-                setxUnit(x / 32);
-                setyUnit(y / 32);
+                setxUnit((x + 8) / 32);
+                setyUnit((y + 8) / 32);
                 canMove = false;
             }
 

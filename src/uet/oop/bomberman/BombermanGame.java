@@ -344,6 +344,7 @@ public class BombermanGame extends MainGame {
                     Entity object;
                     object = new Wall(i, j, Sprite.wall.getFxImage());
                     stillObjects.add(object);
+                    map[i][j] = "#";
                 } else if (type.equals("*")) {
 
                     //Đặt cỏ ở dưới
@@ -354,6 +355,7 @@ public class BombermanGame extends MainGame {
                     Entity object;
                     object = new Brick(i, j, Sprite.brick.getFxImage());
                     stillObjects.add(object);
+                    map[i][j] = "*";
                 } else if (type.equals("x")) {
 
                     //Đặt cỏ ở dưới
@@ -364,6 +366,7 @@ public class BombermanGame extends MainGame {
                     Entity object;
                     object = new Portal(i, j, Sprite.portal.getFxImage());
                     stillObjects.add(object);
+                    map[i][j] = "x";
                 } else if (type.equals("1")) {
 
                     //Đặt cỏ ở dưới
@@ -374,6 +377,7 @@ public class BombermanGame extends MainGame {
                     Entity object;
                     object = new Balloon(i, j, Sprite.balloom_left1.getFxImage());
                     entities.add(object);
+                    map[i][j] = "+";
                 } else if (type.equals("2")) {
 
                     //Đặt cỏ ở dưới
@@ -384,6 +388,7 @@ public class BombermanGame extends MainGame {
                     Entity object;
                     object = new Oneal(i, j, Sprite.oneal_left1.getFxImage());
                     entities.add(object);
+                    map[i][j] = "+";
                 } else if (type.equals("b")) {
 
                     //Đặt cỏ ở dưới
@@ -399,6 +404,7 @@ public class BombermanGame extends MainGame {
                     Entity object;
                     object = new Brick(i, j, Sprite.brick.getFxImage());
                     stillObjects.add(object);
+                    map[i][j] = "*";
 
                 }  else if (type.equals("f")) {
 
@@ -415,6 +421,7 @@ public class BombermanGame extends MainGame {
                     Entity object1;
                     object1 = new Brick(i, j, Sprite.brick.getFxImage());
                     stillObjects.add(object1);
+                    map[i][j] = "*";
 
                 }  else if (type.equals("s")) {
 
@@ -431,11 +438,13 @@ public class BombermanGame extends MainGame {
                     Entity object;
                     object = new Brick(i, j, Sprite.brick.getFxImage());
                     stillObjects.add(object);
+                    map[i][j] = "*";
 
                 } else if (type.equals("p")) {
                     //Đặt cỏ ở dưới
                     Entity layer = new Grass(i, j, Sprite.grass.getFxImage());
                     stillObjects.add(layer);
+                    map[i][j] = "+";
 
                     //Đặt bomberman ở vị trí này
                     /* entities.get(0).setX(j);
@@ -447,10 +456,11 @@ public class BombermanGame extends MainGame {
                     Entity object;
                     object = new Grass(i, j, Sprite.grass.getFxImage());
                     stillObjects.add(object);
+                    map[i][j] = "+";
                 }
 
                 //Lưu map
-                map[i][j] = type;
+                //map[i][j] = type;
             }
         }
 
