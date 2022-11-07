@@ -195,10 +195,10 @@ public abstract class Bomber extends Entity {
                 stepCount = 0;
             }
         } else {
-            System.out.println("DEAD");
-            if (timeToDie > 0) {
+            if (timeToDie > 1) {
+
                 timeToDie--;
-                this.setImg(Sprite.movingSprite(player_dead3, player_dead3, player_dead2, player_dead1, timeToDie, 30).getFxImage());
+                this.setImg(Sprite.movingSprite(player_dead3, player_dead3, player_dead2, player_dead1, timeToDie, 40).getFxImage());
                 BombermanGame.map[yUnit][xUnit] = "+";
             } else {
                 this.setImg(null);

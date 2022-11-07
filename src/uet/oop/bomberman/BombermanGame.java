@@ -1,6 +1,7 @@
 package uet.oop.bomberman;
 
 //import com.sun.deploy.security.JarSignature;
+import javafx.scene.Node;
 import uet.oop.bomberman.Socket.Network;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -26,6 +27,7 @@ import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.Socket.NetworkServer;
 
+import java.awt.event.ActionEvent;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +41,7 @@ public class BombermanGame extends MainGame {
     private GraphicsContext gc;
     private Canvas canvas;
     private MediaPlayer mediaPlayer;
+    private Stage stage;
     @FXML
     Button startButton;
     @FXML
@@ -51,6 +54,13 @@ public class BombermanGame extends MainGame {
     @Override
     public void start(Stage stage) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("Menu.fxml")));
+        stage.setTitle("Bomberman");
+        stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
+        stage.show();
+    }
+
+    public void end(Stage stage) throws IOException {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("Over.fxml")));
         stage.setTitle("Bomberman");
         stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
         stage.show();
@@ -91,15 +101,13 @@ public class BombermanGame extends MainGame {
             @Override
             public void handle(long l) {
                 render();
-                update();
+                update(this);
 
             }
         };
 
-
-
         // Them scene vao stage
-        Stage stage = (Stage) startButton.getScene().getWindow();
+        stage = (Stage) startButton.getScene().getWindow();
         stage.setScene(scene);
         stage.show();
 
@@ -146,7 +154,7 @@ public class BombermanGame extends MainGame {
             @Override
             public void handle(long l) {
                 render();
-                update();
+                update(this);
 
                 //Listen to client
                 try {
@@ -160,9 +168,8 @@ public class BombermanGame extends MainGame {
         };
 
 
-
         // Them scene vao stage
-        Stage stage = (Stage) multiplayerButton.getScene().getWindow();
+        stage = (Stage) multiplayerButton.getScene().getWindow();
         stage.setScene(scene);
         stage.show();
 
@@ -170,6 +177,8 @@ public class BombermanGame extends MainGame {
 
         createMapMultiplayer();
     }
+
+
 
     public void createMap() throws IOException {
         //đọc file level.txt
@@ -471,12 +480,13 @@ public class BombermanGame extends MainGame {
         myReader.close();
     }
 
-    public void update() {
+    public void update(AnimationTimer timer) {
         final Bomber[] bomber = new Bomber[2];
         entities.forEach(entity -> {
             entity.update();
             if (entity instanceof BomberServer) {
                 bomber[0] = (Bomber) entity;
+
             } else if (entity instanceof BomberClient) {
                 bomber[1] = (Bomber) entity;
             }
@@ -494,6 +504,7 @@ public class BombermanGame extends MainGame {
                 }
             }
         });
+
         entities.removeIf(entity -> entity.getTimeToDie() == 0);
 
         for (Entity entity: stillObjects) {
@@ -541,6 +552,43 @@ public class BombermanGame extends MainGame {
 
         //Play bg music
         mediaPlayer.play();
+
+        //if dead single player
+        if (bomber[1] == null) {
+            if (bomber[0].getImg() == null) {
+                if (bombs.isEmpty()) {
+                    try {
+                        entities.clear();
+                        stillObjects.clear();
+                        map = new String[HEIGHT][WIDTH];
+                        timer.stop();
+                        mediaPlayer.stop();
+                        end(stage);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            //if dead multiplayer
+        } else {
+            if (bomber[0].getImg() == null || bomber[1].getImg() == null) {
+                if (bombs.isEmpty()) {
+                    try {
+                        entities.clear();
+                        stillObjects.clear();
+                        map = new String[HEIGHT][WIDTH];
+                        timer.stop();
+                        mediaPlayer.stop();
+                        networkBomber.close();
+                        end(stage);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
     }
 
     public void render() {

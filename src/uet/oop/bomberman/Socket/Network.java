@@ -20,4 +20,9 @@ public abstract class Network {
     public void handle() throws IOException {
         line = is.readLine();
     }
+
+    public void close() throws IOException {
+        is.close();
+        os.close();
+    }
 }

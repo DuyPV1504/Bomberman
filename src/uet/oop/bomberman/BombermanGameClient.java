@@ -2,6 +2,10 @@ package uet.oop.bomberman;
 
 //import com.sun.deploy.security.JarSignature;
 
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import uet.oop.bomberman.Bomber.BomberClient;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -32,13 +36,24 @@ public class BombermanGameClient extends MainGame {
     private GraphicsContext gc;
     private Canvas canvas;
     private MediaPlayer mediaPlayer;
+    private Stage stage;
+
+    @FXML
+    Button btnStart;
 
     public static void main(String[] args) {
         Application.launch(BombermanGameClient.class);
     }
 
+    public void end(Stage stage) throws IOException {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("OverClient.fxml")));
+        stage.setTitle("BombermanClient");
+        stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
+        stage.show();
+    }
+
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stageMulti) throws IOException {
         // Tao Canvas
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
@@ -76,7 +91,7 @@ public class BombermanGameClient extends MainGame {
             @Override
             public void handle(long l) {
                 render();
-                update();
+                update(this);
 
                 //Listen to client
                 try {
@@ -88,16 +103,81 @@ public class BombermanGameClient extends MainGame {
             }
         };
 
-
+        // Tao stage
+        stage = stageMulti;
 
         // Them scene vao stage
         stage.setScene(scene);
         stage.show();
+        stage.setTitle("BombermanClient");
 
         timer.start();
 
         createMap();
 
+    }
+
+    public void startGame() throws IOException {
+        // Tao Canvas
+        canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
+        gc = canvas.getGraphicsContext2D();
+
+        // Tao root container
+        Group root = new Group();
+        root.getChildren().add(canvas);
+
+        // Tao scene
+        scene = new Scene(root);
+
+        // Tao socket
+        networkBomber = new NetworkClient(9999);
+
+        // bomberman init
+        Entity bomberman = new BomberClient(6, 7, Sprite.player_right.getFxImage());
+        Entity bombermanClient = new BomberServer(11, 29, Sprite.player_right.getFxImage());
+        entities.add(bomberman);
+        entities.add(bombermanClient);
+
+        // Music
+        Media bgMusic;
+
+        try {
+            bgMusic = new Media(new File("res\\sound\\Abstraction - Patreon Goal Reward Loops\\Patreon Goal Reward Loops - Track 05.wav").toURI().toString());
+            mediaPlayer = new MediaPlayer(bgMusic);
+            explosionSound = new AudioClip(new File("res\\sound\\clip audio\\Bomberman SFX (3).wav").toURI().toString());
+
+        } catch (Exception e) {
+            System.out.println("Error with playing sound.");
+            e.printStackTrace();
+        }
+
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                render();
+                update(this);
+
+                //Listen to client
+                try {
+                    networkBomber.handle();
+                } catch (IOException ignored) {
+                    /* Server haven't response yet */
+                }
+
+            }
+        };
+
+        // Tao stage
+        stage = (Stage) btnStart.getScene().getWindow();
+
+        // Them scene vao stage
+        stage.setScene(scene);
+        stage.show();
+        stage.setTitle("BombermanClient");
+
+        timer.start();
+
+        createMap();
     }
 
     public void createMap() throws IOException {
@@ -250,7 +330,7 @@ public class BombermanGameClient extends MainGame {
         myReader.close();
     }
 
-    public void update() {
+    public void update(AnimationTimer timer) {
         final Bomber[] bomber = new Bomber[2];
         entities.forEach(entity -> {
             entity.update();
@@ -320,6 +400,25 @@ public class BombermanGameClient extends MainGame {
 
         //Play bg music
         mediaPlayer.play();
+
+        //Game over
+        //if dead single player
+
+        if (bomber[0].getImg() == null || bomber[1].getImg() == null) {
+            if (bombs.isEmpty()) {
+                try {
+                    entities.clear();
+                    stillObjects.clear();
+                    map = new String[HEIGHT][WIDTH];
+                    timer.stop();
+                    mediaPlayer.stop();
+                    networkBomber.close();
+                    end(stage);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     public void render() {

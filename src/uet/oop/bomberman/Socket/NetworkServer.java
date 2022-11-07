@@ -25,4 +25,11 @@ public class NetworkServer extends Network {
         }
     }
 
+    @Override
+    public void close() throws IOException {
+        super.close();
+        listener.close();
+        socketOfServer.close();
+    }
+
 }
