@@ -51,6 +51,11 @@ public class BombermanGame extends MainGame {
         Application.launch(BombermanGame.class);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | FXML screens
+    |--------------------------------------------------------------------------
+     */
     @Override
     public void start(Stage stage) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("Menu.fxml")));
@@ -66,6 +71,18 @@ public class BombermanGame extends MainGame {
         stage.show();
     }
 
+    public void win(Stage stage) throws IOException {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("Win.fxml")));
+        stage.setTitle("Bomberman");
+        stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
+        stage.show();
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | SinglePlayer
+    |--------------------------------------------------------------------------
+     */
     public void startGame() throws Exception {
         // Tao Canvas
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
@@ -116,6 +133,11 @@ public class BombermanGame extends MainGame {
         createMap();
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Multiplayer
+    |--------------------------------------------------------------------------
+     */
     public void multiplayerGame() throws IOException {
         // Tao Canvas
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
@@ -178,8 +200,11 @@ public class BombermanGame extends MainGame {
         createMapMultiplayer();
     }
 
-
-
+    /*
+    |--------------------------------------------------------------------------
+    | Functions
+    |--------------------------------------------------------------------------
+     */
     public void createMap() throws IOException {
         //đọc file level.txt
         File level1 = new File("res\\levels\\Level1.txt");
@@ -553,6 +578,7 @@ public class BombermanGame extends MainGame {
         //Play bg music
         mediaPlayer.play();
 
+        /* Lose condition */
         //if dead single player
         if (bomber[1] == null) {
             if (bomber[0].getImg() == null) {
@@ -589,6 +615,21 @@ public class BombermanGame extends MainGame {
             }
         }
 
+        /* Win condition */
+        if (entities.size() == 1 && bomber[1] == null) {
+            if (entities.get(0) instanceof BomberServer && bombs.isEmpty()) {
+                try {
+                    entities.clear();
+                    stillObjects.clear();
+                    map = new String[HEIGHT][WIDTH];
+                    timer.stop();
+                    mediaPlayer.stop();
+                    win(stage);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     public void render() {
