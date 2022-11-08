@@ -19,6 +19,7 @@ public class Sprite {
 
 
 	public static Sprite nothing = new Sprite(DEFAULT_SIZE, 4, 1, SpriteSheet.tiles, 16, 16);
+
 	/*
 	|--------------------------------------------------------------------------
 	| Board sprites
