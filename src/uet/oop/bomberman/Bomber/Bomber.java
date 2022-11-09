@@ -9,6 +9,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Pair;
 import uet.oop.bomberman.BombermanGame;
+import uet.oop.bomberman.MainGame;
 import uet.oop.bomberman.entities.Bomb;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.graphics.Sprite;
@@ -175,9 +176,9 @@ public abstract class Bomber extends Entity {
 
             if (canMove) {
                 x = x + speed_x;
-                setxUnit(x / 32);
                 y = y + speed_y;
-                setyUnit(y / 32);
+                setxUnit((x + 8) / 32);
+                setyUnit((y + 8) / 32);
                 canMove = false;
             }
 
@@ -194,10 +195,10 @@ public abstract class Bomber extends Entity {
                 stepCount = 0;
             }
         } else {
-            System.out.println("DEAD");
-            if (timeToDie > 0) {
+            if (timeToDie > 1) {
+
                 timeToDie--;
-                this.setImg(Sprite.movingSprite(player_dead3, player_dead3, player_dead2, player_dead1, timeToDie, 30).getFxImage());
+                this.setImg(Sprite.movingSprite(player_dead3, player_dead3, player_dead2, player_dead1, timeToDie, 40).getFxImage());
                 BombermanGame.map[yUnit][xUnit] = "+";
             } else {
                 this.setImg(null);

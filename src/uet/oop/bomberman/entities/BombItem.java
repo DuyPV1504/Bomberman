@@ -6,6 +6,7 @@ import uet.oop.bomberman.graphics.Sprite;
 
 public class BombItem extends Entity {
 
+    private boolean isReceived = false;
     private int COLLISION_BOX_WIDTH = 26;
     private int COLLISION_BOX_HEIGHT = 24;
 
@@ -14,9 +15,15 @@ public class BombItem extends Entity {
         this.collisionBox = new Rectangle(x * Sprite.SCALED_SIZE + 2, y * Sprite.SCALED_SIZE + 4,
                 COLLISION_BOX_WIDTH, COLLISION_BOX_HEIGHT);
     }
+    public void setReceived(boolean received) {
+        isReceived = received;
+    }
 
     @Override
     public void update() {
-
+        if(isReceived) {
+            setAlive(false);
+            this.img = null;
+        }
     }
 }

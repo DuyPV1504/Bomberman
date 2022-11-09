@@ -4,10 +4,12 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.utils.Collision;
 
 public class Bomb extends Entity {
     private int timeToExplode = 180;
     private int timeAfterExplode = 50;
+    private int timeToAnimate = timeAfterExplode;
     private boolean exploded = false;
     private boolean allowToPassThru = true;
     private int radius = 1;
@@ -52,118 +54,121 @@ public class Bomb extends Entity {
     }
 
     private void kill() {
-        if (!hasKilledBrick) {
-            outerLoop:
-            for (int i = 0; i <= radius; i++) {
-                for (Entity entity : BombermanGame.entities) {
+//        if (!hasKilledBrick) {
+        outerLoop:
+        for (int i = 0; i <= radius; i++) {
+            for (Entity entity : BombermanGame.entities) {
+//                    if (entity.getxUnit() <= this.getxUnit() + i && entity.getxUnit() > this.getxUnit()
+//                            && entity.getyUnit() == this.getyUnit()) {
+                if (Collision.bombKillEnemiesLeft(this, entity, i)) {
+                    entity.setAlive(false);
+                }
+            }
+
+            for (Entity entity : BombermanGame.stillObjects) {
+                if (entity instanceof Brick || entity instanceof Wall) {
                     if (entity.getxUnit() <= this.getxUnit() + i && entity.getxUnit() > this.getxUnit()
                             && entity.getyUnit() == this.getyUnit()) {
-                        entity.setAlive(false);
-                    }
-                }
-
-                for (Entity entity : BombermanGame.stillObjects) {
-                    if (entity instanceof Brick) {
-                        if (entity.getxUnit() <= this.getxUnit() + i && entity.getxUnit() > this.getxUnit()
-                                && entity.getyUnit() == this.getyUnit()) {
-                            if (i == 1) {
-                                brickonRight = true;
-                            }
-                            if (i == 2) {
-                                brickonRight1 = true;
-                            }
-
-                            entity.setAlive(false);
-                            break outerLoop;
+                        if (i == 1) {
+                            brickonRight = true;
                         }
+                        if (i == 2) {
+                            brickonRight1 = true;
+                        }
+
+                        entity.setAlive(false);
+                        break outerLoop;
                     }
                 }
             }
+        }
 
-            outerLoop:
-            for (int i = 0; i <= radius; i++) {
-                for (Entity entity : BombermanGame.entities) {
+        outerLoop:
+        for (int i = 0; i <= radius; i++) {
+            for (Entity entity : BombermanGame.entities) {
+//                if (entity.getxUnit() >= this.getxUnit() - i && entity.getxUnit() < this.getxUnit()
+//                        && entity.getyUnit() == this.getyUnit()) {
+                if (Collision.bombKillEnemiesRight(this, entity, i)) {
+                    entity.setAlive(false);
+                }
+            }
+
+            for (Entity entity : BombermanGame.stillObjects) {
+                if (entity instanceof Brick || entity instanceof Wall) {
                     if (entity.getxUnit() >= this.getxUnit() - i && entity.getxUnit() < this.getxUnit()
                             && entity.getyUnit() == this.getyUnit()) {
+                        if (i == 1) {
+                            brickonLeft = true;
+                        }
+                        if (i == 2) {
+                            brickonLeft1 = true;
+                        }
+
 
                         entity.setAlive(false);
-                    }
-                }
-
-                for (Entity entity : BombermanGame.stillObjects) {
-                    if (entity instanceof Brick) {
-                        if (entity.getxUnit() >= this.getxUnit() - i && entity.getxUnit() < this.getxUnit()
-                                && entity.getyUnit() == this.getyUnit()) {
-                            if (i == 1) {
-                                brickonLeft = true;
-                            }
-                            if (i == 2) {
-                                brickonLeft1 = true;
-                            }
-
-
-                            entity.setAlive(false);
-                            break outerLoop;
-                        }
+                        break outerLoop;
                     }
                 }
             }
+        }
 
-            outerLoop:
-            for (int i = 0; i <= radius; i++) {
-                for (Entity entity : BombermanGame.entities) {
+        outerLoop:
+        for (int i = 0; i <= radius; i++) {
+            for (Entity entity : BombermanGame.entities) {
+//                if (entity.getyUnit() <= this.getyUnit() + i && entity.getyUnit() >= this.getyUnit()
+//                        && entity.getxUnit() == this.getxUnit()) {
+                if (Collision.bombKillEnemiesDown(this, entity, i)) {
+                    entity.setAlive(false);
+                }
+            }
+
+            for (Entity entity : BombermanGame.stillObjects) {
+                if (entity instanceof Brick || entity instanceof Wall) {
                     if (entity.getyUnit() <= this.getyUnit() + i && entity.getyUnit() >= this.getyUnit()
                             && entity.getxUnit() == this.getxUnit()) {
-                        entity.setAlive(false);
-                    }
-                }
-
-                for (Entity entity : BombermanGame.stillObjects) {
-                    if (entity instanceof Brick) {
-                        if (entity.getyUnit() <= this.getyUnit() + i && entity.getyUnit() >= this.getyUnit()
-                                && entity.getxUnit() == this.getxUnit()) {
-                            if (i == 1) {
-                                brickonDown = true;
-                            }
-                            if (i == 2) {
-                                brickonDown1 = true;
-                            }
-
-                            entity.setAlive(false);
-                            break outerLoop;
+                        if (i == 1) {
+                            brickonDown = true;
                         }
+                        if (i == 2) {
+                            brickonDown1 = true;
+                        }
+
+                        entity.setAlive(false);
+                        break outerLoop;
                     }
                 }
             }
+        }
 
-            outerLoop:
-            for (int i = 0; i <= radius; i++) {
-                for (Entity entity : BombermanGame.entities) {
+        outerLoop:
+        for (int i = 0; i <= radius; i++) {
+            for (Entity entity : BombermanGame.entities) {
+//                if (entity.getyUnit() >= this.getyUnit() - i && entity.getyUnit() < this.getyUnit()
+//                        && entity.getxUnit() == this.getxUnit()) {
+                if (Collision.bombKillEnemiesUp(this, entity, i)) {
+                    entity.setAlive(false);
+                }
+            }
+
+            for (Entity entity : BombermanGame.stillObjects) {
+                if (entity instanceof Brick || entity instanceof Wall) {
                     if (entity.getyUnit() >= this.getyUnit() - i && entity.getyUnit() < this.getyUnit()
                             && entity.getxUnit() == this.getxUnit()) {
-                        entity.setAlive(false);
-                    }
-                }
-
-                for (Entity entity : BombermanGame.stillObjects) {
-                    if (entity instanceof Brick) {
-                        if (entity.getyUnit() >= this.getyUnit() - i && entity.getyUnit() < this.getyUnit()
-                                && entity.getxUnit() == this.getxUnit()) {
-                            if (i == 1) {
-                                brickonUp = true;
-                            }
-                            if (i == 2) {
-                                brickonUp1 = true;
-                            }
-
-                            entity.setAlive(false);
-                            break outerLoop;
+                        if (i == 1) {
+                            brickonUp = true;
                         }
+                        if (i == 2) {
+                            brickonUp1 = true;
+                        }
+
+                        entity.setAlive(false);
+                        break outerLoop;
                     }
                 }
             }
-            hasKilledBrick = true;
         }
+//            hasKilledBrick = true;
+//        }
     }
 
     public void update() {
@@ -206,7 +211,7 @@ public class Bomb extends Entity {
                             Sprite.bomb_exploded2,
                             Sprite.bomb_exploded1,
                             Sprite.bomb_exploded,
-                            timeAfterExplode, 60).getFxImage(), x, y);
+                            timeAfterExplode, timeToAnimate).getFxImage(), x, y);
 
                 }
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              if (!BombermanGame.map[yUnit][xUnit - 1].equals("#") && !exploded) {
@@ -217,7 +222,7 @@ public class Bomb extends Entity {
                             Sprite.explosion_horizontal_left_last2,
                             Sprite.explosion_horizontal_left_last1,
                             Sprite.explosion_horizontal_left_last,
-                            timeAfterExplode, 60).getFxImage(), x - Sprite.SCALED_SIZE, y);
+                            timeAfterExplode, timeToAnimate).getFxImage(), x - Sprite.SCALED_SIZE, y);
 
                 }
                 if (!BombermanGame.map[yUnit][xUnit + 1].equals("#") && !exploded) {
@@ -228,7 +233,7 @@ public class Bomb extends Entity {
                             Sprite.explosion_horizontal_right_last2,
                             Sprite.explosion_horizontal_right_last1,
                             Sprite.explosion_horizontal_right_last,
-                            timeAfterExplode, 60).getFxImage(), x + Sprite.SCALED_SIZE, y);
+                            timeAfterExplode, timeToAnimate).getFxImage(), x + Sprite.SCALED_SIZE, y);
 
                 }
                 if (!BombermanGame.map[yUnit - 1][xUnit].equals("#") && !exploded) {
@@ -239,7 +244,7 @@ public class Bomb extends Entity {
                             Sprite.explosion_vertical_top_last2,
                             Sprite.explosion_vertical_top_last1,
                             Sprite.explosion_vertical_top_last,
-                            timeAfterExplode, 60).getFxImage(), x, y - Sprite.SCALED_SIZE);
+                            timeAfterExplode, timeToAnimate).getFxImage(), x, y - Sprite.SCALED_SIZE);
 
                 }
                 if (!BombermanGame.map[yUnit + 1][xUnit].equals("#") && !exploded) {
@@ -250,7 +255,7 @@ public class Bomb extends Entity {
                             Sprite.explosion_vertical_down_last2,
                             Sprite.explosion_vertical_down_last1,
                             Sprite.explosion_vertical_down_last,
-                            timeAfterExplode, 60).getFxImage(), x, y + Sprite.SCALED_SIZE);
+                            timeAfterExplode, timeToAnimate).getFxImage(), x, y + Sprite.SCALED_SIZE);
 
                 }
 
@@ -262,7 +267,7 @@ public class Bomb extends Entity {
                             Sprite.bomb_exploded2,
                             Sprite.bomb_exploded1,
                             Sprite.bomb_exploded,
-                            timeAfterExplode, 60).getFxImage(), x, y);
+                            timeAfterExplode, timeToAnimate).getFxImage(), x, y);
                 }
 
                 if(!BombermanGame.map[yUnit][xUnit - 1].equals("#") && !exploded) {
@@ -272,7 +277,7 @@ public class Bomb extends Entity {
                             Sprite.explosion_horizontal2,
                             Sprite.explosion_horizontal1,
                             Sprite.explosion_horizontal,
-                            timeAfterExplode, 60).getFxImage(), x - Sprite.SCALED_SIZE, y);
+                            timeAfterExplode, timeToAnimate).getFxImage(), x - Sprite.SCALED_SIZE, y);
 
                     if(!BombermanGame.map[yUnit][xUnit - 2].equals("#") && !exploded && !brickonLeft) {
                         gc.drawImage(Sprite.movingSprite(
@@ -281,7 +286,7 @@ public class Bomb extends Entity {
                                 Sprite.explosion_horizontal_left_last2,
                                 Sprite.explosion_horizontal_left_last1,
                                 Sprite.explosion_horizontal_left_last,
-                                timeAfterExplode, 60).getFxImage(), x - Sprite.SCALED_SIZE * 2, y);
+                                timeAfterExplode, timeToAnimate).getFxImage(), x - Sprite.SCALED_SIZE * 2, y);
 
                     }
                 }
@@ -293,7 +298,7 @@ public class Bomb extends Entity {
                             Sprite.explosion_horizontal2,
                             Sprite.explosion_horizontal1,
                             Sprite.explosion_horizontal,
-                            timeAfterExplode, 60).getFxImage(), x + Sprite.SCALED_SIZE, y);
+                            timeAfterExplode, timeToAnimate).getFxImage(), x + Sprite.SCALED_SIZE, y);
 
                     if(!BombermanGame.map[yUnit][xUnit + 2].equals("#") && !exploded && !brickonRight) {
                         gc.drawImage(Sprite.movingSprite(
@@ -302,7 +307,7 @@ public class Bomb extends Entity {
                                 Sprite.explosion_horizontal_right_last2,
                                 Sprite.explosion_horizontal_right_last1,
                                 Sprite.explosion_horizontal_right_last,
-                                timeAfterExplode, 60).getFxImage(), x + Sprite.SCALED_SIZE * 2, y);
+                                timeAfterExplode, timeToAnimate).getFxImage(), x + Sprite.SCALED_SIZE * 2, y);
 
                     }
                 }
@@ -314,7 +319,7 @@ public class Bomb extends Entity {
                             Sprite.explosion_vertical2,
                             Sprite.explosion_vertical1,
                             Sprite.explosion_vertical,
-                            timeAfterExplode, 60).getFxImage(), x, y - Sprite.SCALED_SIZE);
+                            timeAfterExplode, timeToAnimate).getFxImage(), x, y - Sprite.SCALED_SIZE);
 
                     if(!BombermanGame.map[yUnit - 2][xUnit].equals("#") && !exploded && !brickonUp) {
                         gc.drawImage(Sprite.movingSprite(
@@ -323,7 +328,7 @@ public class Bomb extends Entity {
                                 Sprite.explosion_vertical_top_last2,
                                 Sprite.explosion_vertical_top_last1,
                                 Sprite.explosion_vertical_top_last,
-                                timeAfterExplode, 60).getFxImage(), x, y - Sprite.SCALED_SIZE * 2);
+                                timeAfterExplode, timeToAnimate).getFxImage(), x, y - Sprite.SCALED_SIZE * 2);
 
                     }
                 }
@@ -335,7 +340,7 @@ public class Bomb extends Entity {
                             Sprite.explosion_vertical2,
                             Sprite.explosion_vertical1,
                             Sprite.explosion_vertical,
-                            timeAfterExplode, 60).getFxImage(), x, y + Sprite.SCALED_SIZE);
+                            timeAfterExplode, timeToAnimate).getFxImage(), x, y + Sprite.SCALED_SIZE);
 
                     if(!BombermanGame.map[yUnit + 2][xUnit].equals("#") && !exploded && !brickonDown) {
                         gc.drawImage(Sprite.movingSprite(
@@ -344,7 +349,7 @@ public class Bomb extends Entity {
                                 Sprite.explosion_vertical_down_last2,
                                 Sprite.explosion_vertical_down_last1,
                                 Sprite.explosion_vertical_down_last,
-                                timeAfterExplode, 60).getFxImage(), x, y + Sprite.SCALED_SIZE * 2);
+                                timeAfterExplode, timeToAnimate).getFxImage(), x, y + Sprite.SCALED_SIZE * 2);
 
                     }
                 }
@@ -357,7 +362,7 @@ public class Bomb extends Entity {
                             Sprite.bomb_exploded2,
                             Sprite.bomb_exploded1,
                             Sprite.bomb_exploded,
-                            timeAfterExplode, 60).getFxImage(), x, y);
+                            timeAfterExplode, timeToAnimate).getFxImage(), x, y);
 
                 }
                 if (!BombermanGame.map[yUnit][xUnit - 1].equals("#") && !exploded) {
@@ -367,7 +372,7 @@ public class Bomb extends Entity {
                             Sprite.explosion_horizontal2,
                             Sprite.explosion_horizontal1,
                             Sprite.explosion_horizontal,
-                            timeAfterExplode, 60).getFxImage(), x - Sprite.SCALED_SIZE, y);
+                            timeAfterExplode, timeToAnimate).getFxImage(), x - Sprite.SCALED_SIZE, y);
 
                     if (!BombermanGame.map[yUnit][xUnit - 2].equals("#") && !exploded && !brickonLeft) {
                         gc.drawImage(Sprite.movingSprite(
@@ -376,7 +381,7 @@ public class Bomb extends Entity {
                                 Sprite.explosion_horizontal2,
                                 Sprite.explosion_horizontal1,
                                 Sprite.explosion_horizontal,
-                                timeAfterExplode, 60).getFxImage(), x - Sprite.SCALED_SIZE * 2, y);
+                                timeAfterExplode, timeToAnimate).getFxImage(), x - Sprite.SCALED_SIZE * 2, y);
 
                         if (!BombermanGame.map[yUnit][xUnit - 3].equals("#") && !exploded && !brickonLeft1) {
                             gc.drawImage(Sprite.movingSprite(
@@ -385,7 +390,7 @@ public class Bomb extends Entity {
                                     Sprite.explosion_horizontal_left_last2,
                                     Sprite.explosion_horizontal_left_last1,
                                     Sprite.explosion_horizontal_left_last,
-                                    timeAfterExplode, 60).getFxImage(), x - Sprite.SCALED_SIZE * 3, y);
+                                    timeAfterExplode, timeToAnimate).getFxImage(), x - Sprite.SCALED_SIZE * 3, y);
 
                         }
                     }
@@ -397,7 +402,7 @@ public class Bomb extends Entity {
                             Sprite.explosion_horizontal2,
                             Sprite.explosion_horizontal1,
                             Sprite.explosion_horizontal,
-                            timeAfterExplode, 60).getFxImage(), x + Sprite.SCALED_SIZE, y);
+                            timeAfterExplode, timeToAnimate).getFxImage(), x + Sprite.SCALED_SIZE, y);
 
                     if (!BombermanGame.map[yUnit][xUnit + 2].equals("#") && !exploded && !brickonRight) {
                         gc.drawImage(Sprite.movingSprite(
@@ -406,7 +411,7 @@ public class Bomb extends Entity {
                                 Sprite.explosion_horizontal2,
                                 Sprite.explosion_horizontal1,
                                 Sprite.explosion_horizontal,
-                                timeAfterExplode, 60).getFxImage(), x + Sprite.SCALED_SIZE * 2, y);
+                                timeAfterExplode, timeToAnimate).getFxImage(), x + Sprite.SCALED_SIZE * 2, y);
 
                         if (!BombermanGame.map[yUnit][xUnit + 3].equals("#") && !exploded && !brickonRight1) {
                             gc.drawImage(Sprite.movingSprite(
@@ -415,7 +420,7 @@ public class Bomb extends Entity {
                                     Sprite.explosion_horizontal_right_last2,
                                     Sprite.explosion_horizontal_right_last1,
                                     Sprite.explosion_horizontal_right_last,
-                                    timeAfterExplode, 60).getFxImage(), x + Sprite.SCALED_SIZE * 3, y);
+                                    timeAfterExplode, timeToAnimate).getFxImage(), x + Sprite.SCALED_SIZE * 3, y);
 
                         }
                     }
@@ -427,7 +432,7 @@ public class Bomb extends Entity {
                             Sprite.explosion_vertical2,
                             Sprite.explosion_vertical1,
                             Sprite.explosion_vertical,
-                            timeAfterExplode, 60).getFxImage(), x, y - Sprite.SCALED_SIZE);
+                            timeAfterExplode, timeToAnimate).getFxImage(), x, y - Sprite.SCALED_SIZE);
 
                     if (!BombermanGame.map[yUnit - 2][xUnit].equals("#") && !exploded && !brickonUp) {
                         gc.drawImage(Sprite.movingSprite(
@@ -436,7 +441,7 @@ public class Bomb extends Entity {
                                 Sprite.explosion_vertical2,
                                 Sprite.explosion_vertical1,
                                 Sprite.explosion_vertical,
-                                timeAfterExplode, 60).getFxImage(), x, y - Sprite.SCALED_SIZE * 2);
+                                timeAfterExplode, timeToAnimate).getFxImage(), x, y - Sprite.SCALED_SIZE * 2);
 
                         if (!BombermanGame.map[yUnit - 3][xUnit].equals("#") && !exploded && !brickonUp1) {
                             gc.drawImage(Sprite.movingSprite(
@@ -445,7 +450,7 @@ public class Bomb extends Entity {
                                     Sprite.explosion_vertical_top_last2,
                                     Sprite.explosion_vertical_top_last1,
                                     Sprite.explosion_vertical_top_last,
-                                    timeAfterExplode, 60).getFxImage(), x, y - Sprite.SCALED_SIZE * 3);
+                                    timeAfterExplode, timeToAnimate).getFxImage(), x, y - Sprite.SCALED_SIZE * 3);
 
                         }
                     }
@@ -457,7 +462,7 @@ public class Bomb extends Entity {
                             Sprite.explosion_vertical2,
                             Sprite.explosion_vertical1,
                             Sprite.explosion_vertical,
-                            timeAfterExplode, 60).getFxImage(), x, y + Sprite.SCALED_SIZE);
+                            timeAfterExplode, timeToAnimate).getFxImage(), x, y + Sprite.SCALED_SIZE);
 
                     if (!BombermanGame.map[yUnit + 2][xUnit].equals("#") && !exploded && !brickonDown) {
                         gc.drawImage(Sprite.movingSprite(
@@ -466,7 +471,7 @@ public class Bomb extends Entity {
                                 Sprite.explosion_vertical2,
                                 Sprite.explosion_vertical1,
                                 Sprite.explosion_vertical,
-                                timeAfterExplode, 60).getFxImage(), x, y + Sprite.SCALED_SIZE * 2);
+                                timeAfterExplode, timeToAnimate).getFxImage(), x, y + Sprite.SCALED_SIZE * 2);
 
                         if (!BombermanGame.map[yUnit + 3][xUnit].equals("#") && !exploded && !brickonDown1) {
                             gc.drawImage(Sprite.movingSprite(
@@ -475,7 +480,7 @@ public class Bomb extends Entity {
                                     Sprite.explosion_vertical_down_last2,
                                     Sprite.explosion_vertical_down_last1,
                                     Sprite.explosion_vertical_down_last,
-                                    timeAfterExplode, 60).getFxImage(), x, y + Sprite.SCALED_SIZE * 3);
+                                    timeAfterExplode, timeToAnimate).getFxImage(), x, y + Sprite.SCALED_SIZE * 3);
 
                         }
                     }

@@ -1,20 +1,17 @@
-package uet.oop.bomberman.utils;
+package uet.oop.bomberman.Socket;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class NetworkServer {
+public class NetworkServer extends Network {
 
-    public static BufferedReader is;
-    public static BufferedWriter os;
     private static ServerSocket listener = null;
     private static Socket socketOfServer = null;
-    private String clientLine;
 
-    public NetworkServer() {
+    public NetworkServer(int port) {
         try {
-            listener = new ServerSocket(9999);
+            listener = new ServerSocket(port);
             System.out.println("Server is running...");
 
             socketOfServer = listener.accept();
@@ -28,12 +25,11 @@ public class NetworkServer {
         }
     }
 
-    public String getClientLine() {
-        return clientLine;
+    @Override
+    public void close() throws IOException {
+        super.close();
+        listener.close();
+        socketOfServer.close();
     }
 
-    public void handleClient() throws IOException {
-        clientLine = is.readLine();
-//        System.out.println(clientLine);
-    }
 }

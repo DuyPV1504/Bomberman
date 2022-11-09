@@ -1,9 +1,10 @@
 package uet.oop.bomberman.Bomber;
 
 import javafx.scene.image.Image;
-import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.Bomb;
 import uet.oop.bomberman.graphics.Sprite;
+
+import static uet.oop.bomberman.MainGame.*;
 
 public class BomberClient extends Bomber {
     public BomberClient(int xUnit, int yUnit, Image img) {
@@ -12,8 +13,9 @@ public class BomberClient extends Bomber {
 
     @Override
     protected void move() {
-        if (BombermanGame.network.getClientLine() != null) {
-            switch (BombermanGame.network.getClientLine()) {
+
+        if (networkBomber.getLine() != null) {
+            switch (networkBomber.getLine()) {
                 case "UP":
                     direction = "up";
                     speed_y = -1;
