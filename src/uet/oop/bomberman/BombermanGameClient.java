@@ -70,7 +70,7 @@ public class BombermanGameClient extends MainGame {
 
         // bomberman init
         Entity bomberman = new BomberClient(6, 7, Sprite.player_right.getFxImage());
-        Entity bombermanClient = new BomberServer(11, 29, Sprite.player_right.getFxImage());
+        Entity bombermanClient = new BomberServer(1, 1, Sprite.player_right.getFxImage());
         entities.add(bomberman);
         entities.add(bombermanClient);
 
